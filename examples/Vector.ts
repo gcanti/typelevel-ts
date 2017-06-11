@@ -1,6 +1,3 @@
-# Example: vectors
-
-```ts
 import { _1, _2, _3, Nat, Add } from 'typelevel-ts'
 
 function create<A>(as: [A, A, A]): Vector<_3, A>
@@ -39,4 +36,3 @@ const v3 = v1.append(v2)
 // v3.zip(v2) // error
 
 console.log(v2.zip(v1.append(v1))) // Vector([[2,1],[3,1]])
-```
