@@ -1,4 +1,6 @@
-# Example: vectors
+# Examples
+
+## Vectors
 
 ```ts
 import { _1, _2, _3, Nat, Add } from 'typelevel-ts'
@@ -39,4 +41,18 @@ const v3 = v1.append(v2)
 // v3.zip(v2) // error
 
 console.log(v2.zip(v1.append(v1))) // Vector([[2,1],[3,1]])
+```
+
+## The `Omit` operator
+
+```ts
+import { Omit } from 'typelevel-ts'
+import * as React from 'react'
+
+declare function fill<P extends D, D>(C: React.ComponentClass<P>, values: D): React.ComponentClass<Omit<P, keyof D>>
+
+class Foo extends React.Component<{ a: string; b: number }, void> {}
+
+// Bar :: React.ComponentClass<{ a: string }>
+const Bar = fill(Foo, { b: 1 })
 ```
