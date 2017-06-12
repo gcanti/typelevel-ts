@@ -56,3 +56,16 @@ class Foo extends React.Component<{ a: string; b: number }, void> {}
 // Bar :: React.ComponentClass<{ a: string }>
 const Bar = fill(Foo, { b: 1 })
 ```
+
+## The `Diff` operator
+
+```ts
+import { Diff } from 'typelevel-ts'
+
+type Foo = { a: string; b: number }
+
+type Bar = { b: number }
+
+// Baz :: { a: string, b?: number }
+type Baz = Diff<Foo, Bar>
+```
