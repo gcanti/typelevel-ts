@@ -1,8 +1,3 @@
-// adapted from
-// - https://github.com/Microsoft/TypeScript/issues/14833
-// - https://github.com/Microsoft/TypeScript/issues/16392
-// - https://github.com/Microsoft/TypeScript/issues/12215
-
 //
 // Bool - type level booleans
 //
@@ -220,4 +215,5 @@ export type NotStringEq<L1 extends string, L2 extends string> = Not<StringEq<L1,
 //
 // misc
 //
-export type Clean<T> = { [K in keyof T]: T[K] }
+
+export type Clean<T> = Pick<T, keyof T>
