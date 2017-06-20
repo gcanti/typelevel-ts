@@ -1,3 +1,10 @@
+Adapted from
+
+- https://github.com/Microsoft/TypeScript/issues/14833
+- https://github.com/Microsoft/TypeScript/issues/16392
+- https://github.com/Microsoft/TypeScript/issues/12215
+
+
 # `Nat`urals
 
 **Example**. Type-safe vectors
@@ -54,13 +61,13 @@ import { Omit, Clean } from 'typelevel-ts'
 export default function withDefaults<A, D extends keyof A>(
   C: React.ComponentType<A>,
   defaults: Pick<A, D>
-): React.SFC<Clean<Omit<A, D> & Partial<Pick<A, D>>>> {
+): React.SFC<Omit<A, D> & Partial<Pick<A, D>>> {
   return (props: any) => <C {...Object.assign({}, defaults, props)} />
 }
 
 class Foo extends React.Component<{ bar: string; baz: number }, void> {}
-const FilledFoo = withDefaults(Foo, { baz: 1 })
-const x = <FilledFoo bar="bar" /> // ok
+const DefaultedFoo = withDefaults(Foo, { baz: 1 })
+const x = <DefaultedFoo bar="bar" /> // ok
 ```
 
 **Example**. A `withProps` function (React)
