@@ -1,6 +1,6 @@
-# Examples
+# `Nat`urals
 
-## Vectors
+**Example**. Type-safe vectors
 
 ```ts
 import { _1, _2, _3, Nat, Add } from 'typelevel-ts'
@@ -43,21 +43,42 @@ const v3 = v1.append(v2)
 console.log(v2.zip(v1.append(v1))) // Vector([[2,1],[3,1]])
 ```
 
-## The `Omit` operator
+# The `Omit` operator
+
+**Example**. A `withDefaults` function (React)
+
+```ts
+import * as React from 'react'
+import { Omit, Clean } from 'typelevel-ts'
+
+export default function withDefaults<A, D extends keyof A>(
+  C: React.ComponentType<A>,
+  defaults: Pick<A, D>
+): React.SFC<Clean<Omit<A, D> & Partial<Pick<A, D>>>> {
+  return (props: any) => <C {...Object.assign({}, defaults, props)} />
+}
+
+class Foo extends React.Component<{ bar: string; baz: number }, void> {}
+const FilledFoo = withDefaults(Foo, { baz: 1 })
+const x = <FilledFoo bar="bar" /> // ok
+```
+
+**Example**. A `withProps` function (React)
 
 ```ts
 import { Omit } from 'typelevel-ts'
 import * as React from 'react'
 
-declare function fill<P extends D, D>(C: React.ComponentClass<P>, values: D): React.ComponentClass<Omit<P, keyof D>>
+function withProps<D, P extends D>(C: React.ComponentType<P>, values: D): React.SFC<Omit<P, keyof D>> {
+  return (props: any) => <C {...Object.assign({}, props, values)} />
+}
 
-class Foo extends React.Component<{ a: string; b: number }, void> {}
-
-// Bar :: React.ComponentClass<{ a: string }>
-const Bar = fill(Foo, { b: 1 })
+class Foo extends React.Component<{ bar: string; baz: number }, void> {}
+const FilledFoo = withProps(Foo, { baz: 1 })
+const x = <FilledFoo bar="bar" /> // ok
 ```
 
-## The `Diff` operator
+# The `Diff` operator
 
 ```ts
 import { Diff } from 'typelevel-ts'
