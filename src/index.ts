@@ -216,3 +216,8 @@ export type Diff<O1 extends O2, O2> = __Diff<O1, O2>
 export type StringEq<L1 extends string, L2 extends string> = HasKey<{ [K in L1]: any }, L2>
 
 export type NotStringEq<L1 extends string, L2 extends string> = Not<StringEq<L1, L2>>
+
+//
+// misc
+//
+export type Clean<T> = { [K in keyof T]: T[K] }
