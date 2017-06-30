@@ -1,16 +1,14 @@
 {
   "name": "typelevel-ts",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Type level programming in TypeScript",
-  "files": [
-    "lib"
-  ],
+  "files": ["lib"],
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
     "lint": "tslint src/**/*.ts",
     "typings-checker": "typings-checker --allow-expect-error --project typings-checker/tsconfig.json typings-checker/index.ts",
-    "prettier": "prettier --no-semi --single-quote --print-width 120 --parser typescript --list-different \"{src,test}/**/*.ts\"",
+    "prettier": "prettier --no-semi --single-quote --print-width 120 --parser typescript --list-different \"{src,typings-checker}/**/*.ts\"",
     "test": "npm run prettier && npm run lint && npm run typings-checker",
     "clean": "rm -rf lib/*",
     "build": "npm run clean && tsc"
@@ -27,10 +25,10 @@
   "homepage": "https://github.com/gcanti/typelevel-ts",
   "dependencies": {},
   "devDependencies": {
-    "prettier": "^1.4.2",
+    "prettier": "1.5.2",
     "tslint": "4.4.2",
     "tslint-config-standard": "4.0.0",
-    "typescript": "2.3.4",
+    "typescript": "2.4.1",
     "typings-checker": "1.1.2"
   },
   "tags": [],

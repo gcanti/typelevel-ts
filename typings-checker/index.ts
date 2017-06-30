@@ -16,9 +16,6 @@ const x11: t.Or<'false', 'false'> = 'false'
 const x12: t.Eq<'true', 'true'> = 'true'
 const x13: t.Eq<'true', 'false'> = 'false'
 
-const x14: t.NotEq<'true', 'true'> = 'false'
-const x15: t.NotEq<'true', 'false'> = 'true'
-
 const x16: t.If<'true', 'a', 'b'> = 'a'
 const x17: t.If<'false', 'a', 'b'> = 'b'
 
@@ -49,9 +46,6 @@ const x34: t.NatEq<t.UnsafeSub<t._5, t._2>, t._2> = 'false'
 type option_3 = t.Sub<t._5, t._2>
 const x35: t.And<t.IsSome<option_3>, t.NatEq<t.TOptionUnsafeGet<option_3>, t._3>> = 'true'
 
-// 1000
-const x36: t.IsZero<t.Mult<t._10, t.Mult<t._10, t._10>>> = 'false'
-
 const x37: t.Lte<t._0, t._0> = 'true'
 const x38: t.Lte<t._0, t._1> = 'true'
 const x39: t.Lt<t._0, t._0> = 'false'
@@ -62,22 +56,25 @@ const x43: t.Gte<t._1, t._1> = 'true'
 
 const x44: t.NatEq<t.Mod<t._5, t._3>, t._2> = 'true'
 
-const x45: t.NatEq<t.Min<t._2, t._1>, t._1> = 'true'
-const x46: t.NatEq<t.Max<t._2, t._1>, t._2> = 'true'
+const min1: t.NatEq<t.Min<t._2, t._1>, t._1> = 'true'
+const min2: t.NatEq<t.Max<t._2, t._1>, t._2> = 'true'
 
-const c1: t.ContainsLiteral<'a', 'b'> = 'false'
-const c2: t.ContainsLiteral<'a' | 'b', 'b'> = 'true'
+const sc1: t.StringContains<'a', 'b'> = 'false'
+const sc2: t.StringContains<'a' | 'b', 'b'> = 'true'
 
-const om1: t.Omit<{ a: string; b: number }, 'b'> = { a: 'a' }
+const oo1: t.ObjectOmit<{ a: string; b: number }, 'b'> = { a: 'a' }
+const oo2: t.ObjectOmit<{ a?: string; b: number }, 'b'> = { a: 'a' }
+const oo3: t.ObjectOmit<{ a?: string; b: number }, 'b'> = {}
 
-const d1: t.Diff<{ a: string; b: number }, { b: number }> = { a: 'a' }
-const d2: t.Diff<{ a: string; b: number }, { b: number }> = { a: 'a', b: 1 }
+const od1: t.ObjectDiff<{ a: string; b: number }, { b: number }> = { a: 'a' }
+const od2: t.ObjectDiff<{ a: string; b: number }, { b: number }> = { a: 'a', b: 1 }
 
-const o1: t.MergeFields<{ a: number }, { a: string }>['a'] = 'a'
-const f1: t.AddFields<{ a: number }, { a: string }>['a'] = 1
+const oov1: t.ObjectOverwrite<{ a: number }, { a: string }>['a'] = 'a'
+const oov2: t.ObjectOverwrite<{ a: string }, { a: number }>['a'] = 1
 
-const s1: t.StringEq<'a', 'b'> = 'false'
-const s2: t.StringEq<'a', 'a'> = 'true'
+const se1: t.StringEq<'a', 'b'> = 'false'
+const se2: t.StringEq<'a', 'a'> = 'true'
+const se3: t.StringEq<'', ''> = 'true'
 
-const k1: t.HasKey<{ a: number }, 'a'> = 'true'
-const k2: t.HasKey<{ a: number }, 'b'> = 'false'
+const ohk1: t.ObjectHasKey<{ a: number }, 'a'> = 'true'
+const ohk2: t.ObjectHasKey<{ a: number }, 'b'> = 'false'

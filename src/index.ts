@@ -30,8 +30,6 @@ export type Eq<B1 extends Bool, B2 extends Bool> = {
   }
 }[B1][B2]
 
-export type NotEq<B1 extends Bool, B2 extends Bool> = Not<Eq<B1, B2>>
-
 export type If<B extends Bool, Then, Else> = {
   true: Then
   false: Else
@@ -89,8 +87,6 @@ export type NatEq<N1 extends Nat, N2 extends Nat> = {
   }[IsZero<N2>]
 }[IsZero<N1>]
 
-export type NotNatEq<N1 extends Nat, N2 extends Nat> = Not<NatEq<N1, N2>>
-
 export type Add<N1 extends Nat, N2 extends Nat> = {
   true: N2
   false: Succ<Add<Prev<N1>, N2>>
@@ -121,7 +117,7 @@ export type Mult<N1 extends Nat, N2 extends Nat> = {
 }[IsZero<N1>]
 
 export type Lte<N1 extends Nat, N2 extends Nat> = IsSome<Sub<N2, N1>>
-export type Lt<N1 extends Nat, N2 extends Nat> = And<Lte<N1, N2>, NotNatEq<N1, N2>>
+export type Lt<N1 extends Nat, N2 extends Nat> = And<Lte<N1, N2>, Not<NatEq<N1, N2>>>
 export type Gte<N1 extends Nat, N2 extends Nat> = Not<Lt<N1, N2>>
 export type Gt<N1 extends Nat, N2 extends Nat> = Not<Lte<N1, N2>>
 
@@ -153,67 +149,30 @@ export type _9 = Succ<_8>
 export type _10 = Succ<_9>
 
 //
-// unions of literals
+// strings
 //
 
-export type ContainsLiteral<S extends string, L extends string> = ({ [K in S]: 'true' } & {
+export type StringOmit<L1 extends string, L2 extends string> = ({ [P in L1]: P } &
+  { [P in L2]: never } & { [key: string]: never })[L1]
+
+export type StringEq<L1 extends string, L2 extends string> = And<StringContains<L1, L2>, StringContains<L2, L1>>
+
+export type StringIntersection<L1 extends string, L2 extends string> = StringOmit<L1, StringOmit<L1, L2>>
+
+export type StringContains<S extends string, L extends string> = ({ [K in S]: 'true' } & {
   [key: string]: 'false'
 })[L]
-
-export type NotContainsLiteral<S extends string, L extends string> = Not<ContainsLiteral<S, L>>
 
 //
 // objects
 //
 
-export type HasKey<O, L extends string> = ContainsLiteral<keyof O, L>
+export type ObjectHasKey<O, L extends string> = StringContains<keyof O, L>
 
-export type NotHasKey<O, L extends string> = Not<ContainsLiteral<keyof O, L>>
+export type ObjectOverwrite<O1, O2> = Pick<O1, StringOmit<keyof O1, keyof O2>> & O2
 
-export type MergeFields<O1, O2> = { [K in keyof O1 | keyof O2]: { true: O2[K]; false: O1[K] }[HasKey<O2, K>] }
+export type ObjectOmit<O, K extends string> = Pick<O, StringOmit<keyof O, K>>
 
-export type AddFields<O1, O2> = { [K in keyof O1 | keyof O2]: { true: O1[K]; false: O2[K] }[HasKey<O1, K>] }
+export type ObjectDiff<O1 extends O2, O2> = ObjectOmit<O1, keyof O2> & Partial<O2>
 
-/** private */
-export type __Omit<
-  O,
-  U extends string,
-  O_ extends any = {
-    [K in keyof O]: {
-      true: K
-      false: never
-    }[NotContainsLiteral<U, K>]
-  },
-  K_ extends string = keyof Pick<O_, keyof O>
-> = { [K in O_[K_]]: O[K] }
-
-export type Omit<O, U extends string> = __Omit<O, U>
-
-/** private */
-export type __Diff<
-  O1 extends O2,
-  O2,
-  O1_ extends any = {
-    [K in keyof O1]: {
-      true: K
-      false: never
-    }[NotContainsLiteral<keyof O2, K>]
-  },
-  K1_ extends string = keyof Pick<O1_, keyof O1>
-> = { [K in O1_[K1_]]: O1[K] } & { [K in keyof O2]?: O2[K] }
-
-export type Diff<O1 extends O2, O2> = __Diff<O1, O2>
-
-//
-// strings
-//
-
-export type StringEq<L1 extends string, L2 extends string> = HasKey<{ [K in L1]: any }, L2>
-
-export type NotStringEq<L1 extends string, L2 extends string> = Not<StringEq<L1, L2>>
-
-//
-// misc
-//
-
-export type Clean<T> = Pick<T, keyof T>
+export type ObjectClean<T> = Pick<T, keyof T>
