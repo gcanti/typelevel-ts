@@ -78,3 +78,23 @@ const se3: t.StringEq<'', ''> = 'true'
 
 const ohk1: t.ObjectHasKey<{ a: number }, 'a'> = 'true'
 const ohk2: t.ObjectHasKey<{ a: number }, 'b'> = 'false'
+
+type State = { a: string; b: boolean; c: number }
+
+export type E1 = t.PickExact<State, 'c'> | t.PickExact<State, 'a' | 'b'>
+
+const e1: E1 = { c: 1 }
+// $ExpectError Property 'b' is missing in type '{ c: number; a: string; }
+const e2: E1 = { c: 1, a: 'foo' }
+const e3: E1 = { a: 'foo', b: true }
+// $ExpectError Type 'number' is not assignable to type 'undefined'
+const e4: E1 = { a: 'foo', b: true, c: 1 }
+
+type E2 = t.ObjectExact<{ a: number; b?: number }>
+
+const e5: E2 = { a: 1 }
+// $ExpectError Object literal may only specify known properties, and 'c' does not exist in type 'PickExact<{ a: number; b?: number | undefined; }, "a" | "b">'
+const e6: E2 = { a: 1, c: 1 }
+const e7: E2 = { a: 1, b: 1 }
+// $ExpectError Type 'string' is not assignable to type 'number | undefined'
+const e8: E2 = { a: 1, b: 'foo' }
