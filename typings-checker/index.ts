@@ -89,12 +89,3 @@ const e2: E1 = { c: 1, a: 'foo' }
 const e3: E1 = { a: 'foo', b: true }
 // $ExpectError Type 'number' is not assignable to type 'undefined'
 const e4: E1 = { a: 'foo', b: true, c: 1 }
-
-type E2 = t.ObjectExact<{ a: number; b?: number }>
-
-const e5: E2 = { a: 1 }
-// $ExpectError Object literal may only specify known properties, and 'c' does not exist in type 'PickExact<{ a: number; b?: number | undefined; }, "a" | "b">'
-const e6: E2 = { a: 1, c: 1 }
-const e7: E2 = { a: 1, b: 1 }
-// $ExpectError Type 'string' is not assignable to type 'number | undefined'
-const e8: E2 = { a: 1, b: 'foo' }
