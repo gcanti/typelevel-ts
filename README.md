@@ -72,6 +72,8 @@ const DefaultedFoo = withDefaults(Foo, { baz: 1 })
 const x = <DefaultedFoo bar="bar" /> // ok
 ```
 
+# The `ObjectOmit` operator
+
 **Example**. A `withProps` function (React)
 
 ```ts
