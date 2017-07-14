@@ -52,7 +52,7 @@ const v3 = v1.append(v2)
 console.log(v2.zip(v1.append(v1))) // Vector([[2,1],[3,1]])
 ```
 
-# The `ObjectOmit` operator
+# The `ObjectDiff` operator
 
 **Example**. A `withDefaults` function (React)
 
@@ -60,11 +60,11 @@ console.log(v2.zip(v1.append(v1))) // Vector([[2,1],[3,1]])
 import * as React from 'react'
 import { ObjectOmit } from 'typelevel-ts'
 
-export default function withDefaults<A, D extends keyof A>(
+export default function withDefaults<D, A extends D>(
   C: React.ComponentType<A>,
-  defaults: Pick<A, D>
-): React.SFC<ObjectOmit<A, D> & Partial<Pick<A, D>>> {
-  return (props: any) => <C {...Object.assign({}, defaults, props)} />
+  defaults: D
+): React.SFC<ObjectDiff<A, D>> {
+  return (props: any) => <C {...defaults} {...props} />
 }
 
 class Foo extends React.Component<{ bar: string; baz: number }, void> {}
@@ -79,23 +79,10 @@ import { ObjectOmit } from 'typelevel-ts'
 import * as React from 'react'
 
 function withProps<D, P extends D>(C: React.ComponentType<P>, values: D): React.SFC<ObjectOmit<P, keyof D>> {
-  return (props: any) => <C {...Object.assign({}, props, values)} />
+  return (props: any) => <C {...props} {...values} />
 }
 
 class Foo extends React.Component<{ bar: string; baz: number }, void> {}
 const FilledFoo = withProps(Foo, { baz: 1 })
 const x = <FilledFoo bar="bar" /> // ok
-```
-
-# The `ObjectDiff` operator
-
-```ts
-import { Diff } from 'typelevel-ts'
-
-type Foo = { a: string; b: number }
-
-type Bar = { b: number }
-
-// Baz :: { a: string, b?: number }
-type Baz = Diff<Foo, Bar>
 ```

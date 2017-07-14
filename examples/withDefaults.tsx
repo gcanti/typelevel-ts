@@ -1,11 +1,11 @@
 import * as React from 'react'
-import { ObjectOmit } from 'typelevel-ts'
+import { ObjectDiff } from 'typelevel-ts'
 
-export default function withDefaults<A, D extends keyof A>(
+export default function withDefaults<D, A extends D>(
   C: React.ComponentType<A>,
-  defaults: Pick<A, D>
-): React.SFC<ObjectOmit<A, D> & Partial<Pick<A, D>>> {
-  return (props: any) => <C {...Object.assign({}, defaults, props)} />
+  defaults: D
+): React.SFC<ObjectDiff<A, D>> {
+  return (props: any) => <C {...defaults} {...props} />
 }
 
 class Foo extends React.Component<{ bar: string; baz: number }, void> {}
