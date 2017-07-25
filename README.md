@@ -88,11 +88,14 @@ class Foo extends React.Component<{ bar: string; baz: number }, void> {}
 const FilledFoo = withProps(Foo, { baz: 1 })
 const x = <FilledFoo bar="bar" /> // ok
 ```
-# THlist
+
+# THList
 
 How to return the intersection of the items
 
 ```ts
+import { THList, THListIsTHNil, THListHead, THListTail, TupleToTHList } from 'typelevel-ts'
+
 export type __THListIntersection<L extends THList, Acc> = {
   true: Acc
   false: __THListIntersection<THListTail<L>, THListHead<L> & Acc>
@@ -103,4 +106,15 @@ export type THListIntersection<L extends THList, WhenTHNil = never> = {
   true: WhenTHNil
   false: __THListIntersection<THListTail<L>, THListHead<L>>
 }[THListIsTHNil<L>]
+
+type T = [{ a: string }, { b: number }]
+
+type I = THListIntersection<TupleToTHList<T>>
+/*
+type I = {
+    a: string;
+} & {
+    b: number;
+}
+*/
 ```
