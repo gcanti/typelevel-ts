@@ -89,3 +89,6 @@ const e2: E1 = { c: 1, a: 'foo' }
 const e3: E1 = { a: 'foo', b: true }
 // $ExpectError Type 'number' is not assignable to type 'undefined'
 const e4: E1 = { a: 'foo', b: true, c: 1 }
+
+type TTO = t.TupleToObject<[number, string]>
+const tto1: TTO = { 0: 1, 1: 'foo' }

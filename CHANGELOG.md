@@ -12,6 +12,15 @@
 **Note**: Gaps between patch versions are faulty/broken releases.
 **Note**: A feature tagged as Experimental is in a high state of flux, you're at risk of it changing without notice.
 
+# 0.1.3
+
+- **New Feature**
+  - `NumberToNat`
+  - `NatToNumber`
+  - hlists
+  - tuples
+  - convert tuples to / from hlists (`TupleToTHList`, `THListToTuple`)
+
 # 0.1.2
 
 - **Bug Fix**

@@ -1,6 +1,6 @@
 {
   "name": "typelevel-ts",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Type level programming in TypeScript",
   "files": ["lib"],
   "main": "lib/index.js",
