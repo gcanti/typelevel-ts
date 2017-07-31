@@ -151,6 +151,8 @@ export type Max<N1 extends Nat, N2 extends Nat> = If<Lte<N1, N2>, N2, N1>
  */
 export type NumberToNat = TupleToObject<[_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10]>
 
+export type NumberToString = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+
 /** max Nat = _10 */
 export type NatToNumber<N extends Nat> = If<
   NatEq<N, _0>,

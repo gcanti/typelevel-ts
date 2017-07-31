@@ -92,3 +92,8 @@ const e4: E1 = { a: 'foo', b: true, c: 1 }
 
 type TTO = t.TupleToObject<[number, string]>
 const tto1: TTO = { 0: 1, 1: 'foo' }
+
+type FIVE = t.NumberToString[5]
+const n2s1: FIVE = '5'
+// $ExpectError Type '"6"' is not assignable to type '"5"'
+const n2s2: FIVE = '6'
