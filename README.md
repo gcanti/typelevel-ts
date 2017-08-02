@@ -6,6 +6,9 @@ Adapted from
 - https://github.com/Microsoft/TypeScript/issues/16392
 - https://github.com/Microsoft/TypeScript/issues/12215
 
+# Related projects
+
+- [typical - playground for type-level primitives in TypeScript](https://github.com/tycho01/typical) by @tycho01
 
 # `Nat`urals
 
