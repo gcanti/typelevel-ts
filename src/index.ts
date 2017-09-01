@@ -1,184 +1,151 @@
 //
-// Bool - type level booleans
+// helpers
 //
 
-export type Bool = 'true' | 'false'
+export type Increment = { 0: '1'; 1: '2'; 2: '3'; 3: '4'; 4: '5'; 5: '6'; 6: '7'; 7: '8'; 8: '9'; 9: '10'; 10: never }
 
-export type Not<B extends Bool> = {
-  true: 'false'
-  false: 'true'
-}[B]
+export type StringToNumber = { 0: 0; 1: 1; 2: 2; 3: 3; 4: 4; 5: 5; 6: 6; 7: 7; 8: 8; 9: 9; 10: 10 }
 
-export type And<B1 extends Bool, B2 extends Bool> = {
-  false: 'false'
-  true: {
-    false: 'false'
-    true: 'true'
-  }[B2]
-}[B1]
+//
+// booleans
+//
 
-export type Or<B1 extends Bool, B2 extends Bool> = Not<And<Not<B1>, Not<B2>>>
-
-export type Eq<B1 extends Bool, B2 extends Bool> = {
-  true: {
-    true: 'true'
-    false: 'false'
-  }
-  false: {
-    true: 'false'
-    false: 'true'
-  }
-}[B1][B2]
+export type Bool = 'T' | 'F'
 
 export type If<B extends Bool, Then, Else> = {
-  true: Then
-  false: Else
+  T: Then
+  F: Else
 }[B]
 
+export type Not<B extends Bool> = If<B, 'F', 'T'>
+
+export type And<B1 extends Bool, B2 extends Bool> = If<B1, B2, 'F'>
+
+export type Or<B1 extends Bool, B2 extends Bool> = If<B1, 'T', B2>
+
+export type BoolEq<B1 extends Bool, B2 extends Bool> = If<B1, B2, Not<B2>>
+
 //
-// TOption - type level options
+// Option
 //
 
-export type TOption<A> = TNone | TSome<A>
+export type Option<A> = None | Some<A>
 
-export interface TNone {
-  isNone: 'true'
-  _A: any
+export interface None {
+  isNone: 'T'
+  _A: never
 }
 
-export interface TSome<A> {
-  isNone: 'false'
+export interface Some<A> {
+  isNone: 'F'
   _A: A
 }
 
-export type IsNone<O extends TOption<any>> = O['isNone']
+export type IsNone<O extends Option<any>> = O['isNone']
 
-export type IsSome<O extends TOption<any>> = Not<IsNone<O>>
+export type IsSome<O extends Option<any>> = Not<IsNone<O>>
 
-export type TOptionUnsafeGet<O extends TOption<any>> = O['_A']
+export type OptionUnsafeGet<O extends Option<any>> = O['_A']
 
-export type TOptionGetOrElse<O extends TOption<any>, A> = If<IsNone<O>, A, TOptionUnsafeGet<O>>
+export type OptionGetOrElse<O extends Option<any>, A> = If<IsNone<O>, A, OptionUnsafeGet<O>>
 
 //
-// Nat - type level naturals
+// naturals
 //
 
-export interface Nat {
-  prev?: any
-  isZero: Bool
+export interface Zero {
+  isZero: 'T'
+  prev: never
 }
 
-export interface Positive {
-  prev: Positive | _0
-  isZero: 'false'
+export interface Succ<N extends Nat> {
+  isZero: 'F'
+  prev: N
 }
 
-export type _0 = { isZero: 'true' }
-export type _1 = Succ<_0>
-export type _2 = Succ<_1>
-export type _3 = Succ<_2>
-export type _4 = Succ<_3>
-export type _5 = Succ<_4>
-export type _6 = Succ<_5>
-export type _7 = Succ<_6>
-export type _8 = Succ<_7>
-export type _9 = Succ<_8>
-export type _10 = Succ<_9>
+export type Nat = Zero | Succ<any>
+
+export type One = Succ<Zero>
+export type Two = Succ<One>
+export type Three = Succ<Two>
+export type Four = Succ<Three>
+export type Five = Succ<Four>
+export type Six = Succ<Five>
+export type Seven = Succ<Six>
+export type Eight = Succ<Seven>
+export type Nine = Succ<Eight>
+export type Ten = Succ<Nine>
 
 export type IsZero<N extends Nat> = N['isZero']
 
-export type Succ<N extends Nat> = { prev: N; isZero: 'false' }
-
-export type Prev<N extends Positive> = N['prev']
+export type Prev<N extends Nat> = N['prev']
 
 export type NatEq<N1 extends Nat, N2 extends Nat> = {
-  true: IsZero<N2>
-  false: {
-    true: 'false'
-    false: NatEq<Prev<N1>, Prev<N2>>
-  }[IsZero<N2>]
+  T: IsZero<N2>
+  F: If<IsZero<N2>, 'F', NatEq<Prev<N1>, Prev<N2>>>
 }[IsZero<N1>]
 
 export type Add<N1 extends Nat, N2 extends Nat> = {
-  true: N2
-  false: Succ<Add<Prev<N1>, N2>>
+  T: N2
+  F: Succ<Add<Prev<N1>, N2>>
 }[IsZero<N1>]
 
 export type Sub<N1 extends Nat, N2 extends Nat> = {
-  true: {
-    true: TSome<_0>
-    false: TNone
-  }[IsZero<N2>]
-  false: {
-    true: TSome<N1>
-    false: Sub<Prev<N1>, Prev<N2>>
-  }[IsZero<N2>]
+  T: If<IsZero<N2>, Some<Zero>, None>
+  F: If<IsZero<N2>, Some<N1>, Sub<Prev<N1>, Prev<N2>>>
 }[IsZero<N1>]
 
-export type UnsafeSub<N1 extends Nat, N2 extends Nat> = {
-  true: N1
-  false: UnsafeSub<Prev<N1>, Prev<N2>>
-}[IsZero<N2>]
+export type UnsafeSub<N1 extends Nat, N2 extends Nat> = OptionGetOrElse<Sub<N1, N2>, Zero>
 
 export type Mult<N1 extends Nat, N2 extends Nat> = {
-  true: _0
-  false: {
-    true: N2
-    false: Add<N2, Mult<Prev<N1>, N2>>
-  }[IsZero<Prev<N1>>]
+  T: Zero
+  F: If<IsZero<Prev<N1>>, N2, Add<N2, Mult<Prev<N1>, N2>>>
 }[IsZero<N1>]
 
-export type Lte<N1 extends Nat, N2 extends Nat> = IsSome<Sub<N2, N1>>
+export type Lte<N1 extends Nat, N2 extends Nat> = {
+  T: 'T'
+  F: If<IsZero<N2>, 'F', Lte<Prev<N1>, Prev<N2>>>
+}[IsZero<N1>]
+
 export type Lt<N1 extends Nat, N2 extends Nat> = And<Lte<N1, N2>, Not<NatEq<N1, N2>>>
+
 export type Gte<N1 extends Nat, N2 extends Nat> = Not<Lt<N1, N2>>
+
 export type Gt<N1 extends Nat, N2 extends Nat> = Not<Lte<N1, N2>>
 
-export type Mod<N1 extends Nat, N2 extends Nat, R = _0> = {
-  true: R
-  false: Mod<N1, N2, UnsafeSub<N1, N2>>
+export type Mod<N1 extends Nat, N2 extends Nat, R = Zero> = {
+  T: R
+  F: Mod<N1, N2, UnsafeSub<N1, N2>>
 }[IsZero<N1>]
 
 export type Min<N1 extends Nat, N2 extends Nat> = If<Lte<N1, N2>, N1, N2>
 
 export type Max<N1 extends Nat, N2 extends Nat> = If<Lte<N1, N2>, N2, N1>
 
-/**
- * max number = 10
- * examples:
- * t.NumberToNat[0] == _0
- * t.NumberToNat[1] == _1
- * t.NumberToNat[10] == _10
- */
-export type NumberToNat = TupleToObject<[_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10]>
+export type NatToString<N extends Nat, I extends keyof Increment = '0'> = {
+  T: I
+  F: NatToString<Prev<N>, Increment[I]>
+}[IsZero<N>]
 
-export type NumberToString = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-
-/** max Nat = _10 */
-export type NatToNumber<N extends Nat> = If<
-  NatEq<N, _0>,
-  0,
-  If<
-    NatEq<N, _1>,
-    1,
-    If<
-      NatEq<N, _2>,
-      2,
-      If<
-        NatEq<N, _3>,
-        3,
-        If<
-          NatEq<N, _4>,
-          4,
-          If<NatEq<N, _5>, 5, If<NatEq<N, _6>, 6, If<NatEq<N, _7>, 7, If<NatEq<N, _8>, 8, If<NatEq<N, _9>, 9, 10>>>>>
-        >
-      >
-    >
-  >
->
+export type NatToNumber<N extends Nat> = StringToNumber[NatToString<N>]
 
 //
 // strings
 //
+
+export type StringToNat = {
+  0: Zero
+  1: One
+  2: Two
+  3: Three
+  4: Four
+  5: Five
+  6: Six
+  7: Seven
+  8: Eight
+  9: Nine
+  10: Ten
+}
 
 export type StringOmit<L1 extends string, L2 extends string> = ({ [P in L1]: P } &
   { [P in L2]: never } & { [key: string]: never })[L1]
@@ -187,8 +154,8 @@ export type StringEq<L1 extends string, L2 extends string> = And<StringContains<
 
 export type StringIntersection<L1 extends string, L2 extends string> = StringOmit<L1, StringOmit<L1, L2>>
 
-export type StringContains<S extends string, L extends string> = ({ [K in S]: 'true' } & {
-  [key: string]: 'false'
+export type StringContains<S extends string, L extends string> = ({ [K in S]: 'T' } & {
+  [key: string]: 'F'
 })[L]
 
 //
@@ -208,96 +175,69 @@ export type ObjectClean<T> = Pick<T, keyof T>
 export type PickExact<O, K extends keyof O> = Pick<O, K> & { [K1 in StringOmit<keyof O, K>]?: never }
 
 //
-// THList - type level hlist
+// hlists
 //
 
-export type THNil = {
-  IsHNil: 'true'
+export interface HNil {
+  isHNil: 'T'
+  head: never
+  tail: never
 }
 
-export type THCons<H, T extends THList> = {
-  IsHNil: 'false'
+export interface HCons<H, T extends HList> {
+  isHNil: 'F'
   head: H
   tail: T
 }
 
-export type THList = THNil | THCons<any, any>
+export type HList = HNil | HCons<any, any>
 
-export type THListIsTHNil<L extends THList> = L['IsHNil']
+export type IsHNil<L extends HList> = L['isHNil']
 
-export type THListHead<L extends THCons<any, any>> = L['head']
+export type Head<L extends HList> = L['head']
 
-export type THListTail<L extends THCons<any, any>> = L['tail']
+export type Tail<L extends HList> = L['tail']
 
-export type THListLength<L extends THList> = {
-  true: _0
-  false: Succ<THListLength<THListTail<L>>>
-}[THListIsTHNil<L>]
+export type TypeAt<L extends HList, I extends Nat> = {
+  T: None
+  F: If<IsZero<I>, Some<Head<L>>, TypeAt<Tail<L>, Prev<I>>>
+}[IsHNil<L>]
 
-export type THListTypeAt<L extends THList, I extends Nat> = {
-  true: THListHead<L>
-  false: THListTypeAt<THListTail<L>, Prev<I>>
-}[IsZero<I>]
+export type UnsafeTypeAt<L extends HList, N extends Nat> = OptionGetOrElse<TypeAt<L, N>, never>
 
-export type THListGet<L extends THList, I extends Nat> = {
-  true: TNone
-  false: {
-    true: TSome<THListHead<L>>
-    false: THListGet<THListTail<L>, Prev<I>>
-  }[IsZero<I>]
-}[THListIsTHNil<L>]
+export type Reverse<L extends HList, Acc extends HList = HNil> = {
+  T: Acc
+  F: Reverse<Tail<L>, HCons<Head<L>, Acc>>
+}[IsHNil<L>]
 
-export type UnsafeTHListGet<L extends THList, I extends Nat> = {
-  true: THListHead<L>
-  false: UnsafeTHListGet<THListTail<L>, Prev<I>>
-}[IsZero<I>]
+export type HListLengthAsNat<L extends HList> = {
+  T: Zero
+  F: Succ<HListLengthAsNat<Tail<L>>>
+}[IsHNil<L>]
 
-export type THListReverse<L extends THList, Acc = THNil> = {
-  true: Acc
-  false: THListReverse<THListTail<L>, THCons<THListHead<L>, Acc>>
-}[THListIsTHNil<L>]
+export type HListLengthAsString<L extends HList> = {
+  T: '0'
+  F: Increment[HListLengthAsString<Tail<L>>]
+}[IsHNil<L>]
 
-/** max length = 6 */
-export type THListToTuple<L extends THList> = {
-  true: []
-  false: {
-    true: [THListHead<L>]
-    false: {
-      true: [THListHead<L>, THListHead<THListTail<L>>]
-      false: {
-        true: [THListHead<L>, THListHead<THListTail<L>>, THListHead<THListTail<THListTail<L>>>]
-        false: {
-          true: [
-            THListHead<L>,
-            THListHead<THListTail<L>>,
-            THListHead<THListTail<THListTail<L>>>,
-            THListHead<THListTail<THListTail<THListTail<L>>>>
-          ]
-          false: {
-            true: [
-              THListHead<L>,
-              THListHead<THListTail<L>>,
-              THListHead<THListTail<THListTail<L>>>,
-              THListHead<THListTail<THListTail<THListTail<L>>>>,
-              THListHead<THListTail<THListTail<THListTail<THListTail<L>>>>>
-            ]
-            false: {
-              true: [
-                THListHead<L>,
-                THListHead<THListTail<L>>,
-                THListHead<THListTail<THListTail<L>>>,
-                THListHead<THListTail<THListTail<THListTail<L>>>>,
-                THListHead<THListTail<THListTail<THListTail<THListTail<L>>>>>,
-                THListHead<THListTail<THListTail<THListTail<THListTail<THListTail<L>>>>>>
-              ]
-              false: 'Error'
-            }[IsZero<THListLength<THListTail<THListTail<THListTail<THListTail<THListTail<THListTail<L>>>>>>>>]
-          }[IsZero<THListLength<THListTail<THListTail<THListTail<THListTail<THListTail<L>>>>>>>]
-        }[IsZero<THListLength<THListTail<THListTail<THListTail<THListTail<L>>>>>>]
-      }[IsZero<THListLength<THListTail<THListTail<THListTail<L>>>>>]
-    }[IsZero<THListLength<THListTail<THListTail<L>>>>]
-  }[IsZero<THListLength<THListTail<L>>>]
-}[IsZero<THListLength<L>>]
+export type HListLengthAsNumber<L extends HList> = StringToNumber[HListLengthAsString<L>]
+
+export type HListToTuple<L extends HList> = {
+  0: never
+  1: [Head<L>]
+  2: [Head<L>, Head<Tail<L>>]
+  3: [Head<L>, Head<Tail<L>>, Head<Tail<Tail<L>>>]
+  4: [Head<L>, Head<Tail<L>>, Head<Tail<Tail<L>>>, Head<Tail<Tail<Tail<L>>>>]
+  5: [Head<L>, Head<Tail<L>>, Head<Tail<Tail<L>>>, Head<Tail<Tail<Tail<L>>>>, Head<Tail<Tail<Tail<Tail<L>>>>>]
+  6: [
+    Head<L>,
+    Head<Tail<L>>,
+    Head<Tail<Tail<L>>>,
+    Head<Tail<Tail<Tail<L>>>>,
+    Head<Tail<Tail<Tail<Tail<L>>>>>,
+    Head<Tail<Tail<Tail<Tail<Tail<L>>>>>>
+  ]
+}[HListLengthAsString<L>]
 
 //
 // tuples
@@ -305,14 +245,14 @@ export type THListToTuple<L extends THList> = {
 
 export type TupleToObject<T> = ObjectOmit<T, keyof Array<any>>
 
-export type Increment = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-export type TupleLength<T, I = 0> = {
-  true: TupleLength<T, Increment[I]>
-  false: I
+export type TupleLengthAsString<T extends [any], I extends keyof Increment = '0'> = {
+  T: TupleLengthAsString<T, Increment[I]>
+  F: I
 }[ObjectHasKey<T, I>]
 
-export type TupleToTHList<T, I = 0, L = THNil> = {
-  true: TupleToTHList<T, Increment[I], THCons<T[I], L>>
-  false: L
+export type TupleLengthAsNumber<T extends [any]> = StringToNumber[TupleLengthAsString<T>]
+
+export type TupleToHList<T extends [any], I extends keyof Increment & keyof T = '0', L extends HList = HNil> = {
+  T: TupleToHList<T, Increment[I], HCons<T[I], L>>
+  F: Reverse<L>
 }[ObjectHasKey<T, I>]

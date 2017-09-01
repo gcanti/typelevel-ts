@@ -1,4 +1,9 @@
-**Requires TypeScript v2.4.1+**
+# Compatibility
+
+- `0.2.0+` for TypeScript `2.5.2+`
+- `0.1.3` for TypeScript `2.4.1+`
+
+# Credits
 
 Adapted from
 
@@ -6,20 +11,22 @@ Adapted from
 - https://github.com/Microsoft/TypeScript/issues/16392
 - https://github.com/Microsoft/TypeScript/issues/12215
 
-# Related projects
+## Related projects
 
 - [typical - playground for type-level primitives in TypeScript](https://github.com/tycho01/typical) by @tycho01
 
-# `Nat`urals
+# Examples
+
+## Naturals
 
 **Example**. Type-safe vectors
 
 ```ts
-import { _1, _2, _3, Nat, Add } from 'typelevel-ts'
+import { One, Two, Three, Nat, Add } from 'typelevel-ts'
 
-function create<A>(as: [A, A, A]): Vector<_3, A>
-function create<A>(as: [A, A]): Vector<_2, A>
-function create<A>(as: [A]): Vector<_1, A>
+function create<A>(as: [A, A, A]): Vector<Three, A>
+function create<A>(as: [A, A]): Vector<Two, A>
+function create<A>(as: [A]): Vector<One, A>
 function create<N extends Nat, A>(as: Array<A>): Vector<N, A> {
   return new Vector<N, A>(as)
 }
@@ -43,11 +50,11 @@ class Vector<N extends Nat, A> {
   }
 }
 
-// v1 :: Vector<_1, number>
+// v1 :: Vector<One, number>
 const v1 = Vector.create([1])
-// v2 :: Vector<_2, number>
+// v2 :: Vector<Two, number>
 const v2 = Vector.create([2, 3])
-// v3 :: Vector<_3, number>
+// v3 :: Vector<Three, number>
 const v3 = v1.append(v2)
 
 // v3.zip(v2) // error
@@ -55,27 +62,24 @@ const v3 = v1.append(v2)
 console.log(v2.zip(v1.append(v1))) // Vector([[2,1],[3,1]])
 ```
 
-# The `ObjectDiff` operator
+## `ObjectDiff`
 
 **Example**. A `withDefaults` function (React)
 
 ```ts
 import * as React from 'react'
-import { ObjectOmit } from 'typelevel-ts'
+import { ObjectDiff } from 'typelevel-ts'
 
-export default function withDefaults<D, A extends D>(
-  C: React.ComponentType<A>,
-  defaults: D
-): React.SFC<ObjectDiff<A, D>> {
-  return (props: any) => <C {...defaults} {...props} />
+function withDefaults<D, A extends D>(C: React.ComponentType<A>, defaults: D): React.SFC<ObjectDiff<A, D>> {
+  return props => <C {...defaults} {...props} />
 }
 
-class Foo extends React.Component<{ bar: string; baz: number }, void> {}
+class Foo extends React.Component<{ bar: string; baz: number }> {}
 const DefaultedFoo = withDefaults(Foo, { baz: 1 })
 const x = <DefaultedFoo bar="bar" /> // ok
 ```
 
-# The `ObjectOmit` operator
+## `ObjectOmit`
 
 **Example**. A `withProps` function (React)
 
@@ -84,40 +88,11 @@ import { ObjectOmit } from 'typelevel-ts'
 import * as React from 'react'
 
 function withProps<D, P extends D>(C: React.ComponentType<P>, values: D): React.SFC<ObjectOmit<P, keyof D>> {
-  return (props: any) => <C {...props} {...values} />
+  return props => <C {...props} {...values} />
 }
 
-class Foo extends React.Component<{ bar: string; baz: number }, void> {}
+class Foo extends React.Component<{ bar: string; baz: number }> {}
 const FilledFoo = withProps(Foo, { baz: 1 })
 const x = <FilledFoo bar="bar" /> // ok
 ```
 
-# THList
-
-How to return the intersection of the items
-
-```ts
-import { THList, THListIsTHNil, THListHead, THListTail, TupleToTHList } from 'typelevel-ts'
-
-export type __THListIntersection<L extends THList, Acc> = {
-  true: Acc
-  false: __THListIntersection<THListTail<L>, THListHead<L> & Acc>
-}[THListIsTHNil<L>]
-
-/** returns the intersection of the contained types */
-export type THListIntersection<L extends THList, WhenTHNil = never> = {
-  true: WhenTHNil
-  false: __THListIntersection<THListTail<L>, THListHead<L>>
-}[THListIsTHNil<L>]
-
-type T = [{ a: string }, { b: number }]
-
-type I = THListIntersection<TupleToTHList<T>>
-/*
-type I = {
-    a: string;
-} & {
-    b: number;
-}
-*/
-```

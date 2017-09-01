@@ -1,8 +1,8 @@
-import { _1, _2, _3, Nat, Add } from 'typelevel-ts'
+import { One, Two, Three, Nat, Add } from 'typelevel-ts'
 
-function create<A>(as: [A, A, A]): Vector<_3, A>
-function create<A>(as: [A, A]): Vector<_2, A>
-function create<A>(as: [A]): Vector<_1, A>
+function create<A>(as: [A, A, A]): Vector<Three, A>
+function create<A>(as: [A, A]): Vector<Two, A>
+function create<A>(as: [A]): Vector<One, A>
 function create<N extends Nat, A>(as: Array<A>): Vector<N, A> {
   return new Vector<N, A>(as)
 }
@@ -26,11 +26,11 @@ class Vector<N extends Nat, A> {
   }
 }
 
-// v1 :: Vector<_1, number>
+// v1 :: Vector<One, number>
 const v1 = Vector.create([1])
-// v2 :: Vector<_2, number>
+// v2 :: Vector<Two, number>
 const v2 = Vector.create([2, 3])
-// v3 :: Vector<_3, number>
+// v3 :: Vector<Three, number>
 const v3 = v1.append(v2)
 
 // v3.zip(v2) // error

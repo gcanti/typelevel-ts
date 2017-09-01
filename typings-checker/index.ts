@@ -1,83 +1,107 @@
 import * as t from '../src'
 
-const x1: t.Not<'true'> = 'false'
-const x2: t.Not<'false'> = 'true'
+//
+// booleans
+//
 
-const x3: t.And<'true', 'true'> = 'true'
-const x4: t.And<'true', 'false'> = 'false'
-const x5: t.And<'false', 'true'> = 'false'
-const x6: t.And<'false', 'false'> = 'false'
+const if1: t.If<'T', 'foo', 'bar'> = 'foo'
+const if2: t.If<'F', 'foo', 'bar'> = 'bar'
 
-const x8: t.Or<'true', 'true'> = 'true'
-const x9: t.Or<'true', 'false'> = 'true'
-const x10: t.Or<'false', 'true'> = 'true'
-const x11: t.Or<'false', 'false'> = 'false'
+const not1: t.Not<'T'> = 'F'
+const not2: t.Not<'F'> = 'T'
 
-const x12: t.Eq<'true', 'true'> = 'true'
-const x13: t.Eq<'true', 'false'> = 'false'
+const and1: t.And<'T', 'T'> = 'T'
+const and2: t.And<'T', 'F'> = 'F'
+const and3: t.And<'F', 'T'> = 'F'
+const and4: t.And<'F', 'F'> = 'F'
 
-const x16: t.If<'true', 'a', 'b'> = 'a'
-const x17: t.If<'false', 'a', 'b'> = 'b'
+const or1: t.Or<'T', 'T'> = 'T'
+const or2: t.Or<'T', 'F'> = 'T'
+const or3: t.Or<'F', 'T'> = 'T'
+const or4: t.Or<'F', 'F'> = 'F'
 
-const x18: t.IsNone<t.TNone> = 'true'
-const x19: t.IsNone<t.TSome<'b'>> = 'false'
-const x20: t.IsSome<t.TNone> = 'false'
-const x21: t.IsSome<t.TSome<'b'>> = 'true'
+const boolEq1: t.BoolEq<'T', 'T'> = 'T'
+const boolEq2: t.BoolEq<'T', 'F'> = 'F'
+const boolEq3: t.BoolEq<'F', 'F'> = 'T'
+const boolEq4: t.BoolEq<'F', 'T'> = 'F'
 
-const x22: t.TOptionGetOrElse<t.TNone, 'a'> = 'a'
-const x23: t.TOptionGetOrElse<t.TSome<'b'>, 'a'> = 'b'
+//
+// Option
+//
 
-const x24: t.IsZero<t._0> = 'true'
-const x25: t.IsZero<t._1> = 'false'
+const isNone1: t.IsNone<t.None> = 'T'
+const isNone2: t.IsNone<t.Some<'foo'>> = 'F'
+const isNone3: t.IsSome<t.None> = 'F'
+const isNone4: t.IsSome<t.Some<'foo'>> = 'T'
 
-const x26: t.NatEq<t._0, t._0> = 'true'
-const x27: t.NatEq<t._0, t._1> = 'false'
+const optionGetOrElse1: t.OptionGetOrElse<t.None, 'foo'> = 'foo'
+const optionGetOrElse2: t.OptionGetOrElse<t.Some<'foo'>, 'bar'> = 'foo'
 
-const x28: t.NatEq<t.Add<t._0, t._1>, t._1> = 'true'
-const x29: t.NatEq<t.Add<t._5, t._5>, t._10> = 'true'
+//
+// naturals
+//
 
-const x30: t.NatEq<t.Mult<t._0, t._5>, t._0> = 'true'
-const x31: t.NatEq<t.Mult<t._1, t._5>, t._5> = 'true'
-const x32: t.NatEq<t.Mult<t._2, t._5>, t._10> = 'true'
+const isZero1: t.IsZero<t.Zero> = 'T'
+const isZero2: t.IsZero<t.One> = 'F'
 
-const x33: t.NatEq<t.UnsafeSub<t._5, t._2>, t._3> = 'true'
-const x34: t.NatEq<t.UnsafeSub<t._5, t._2>, t._2> = 'false'
+const natEq1: t.NatEq<t.Zero, t.Zero> = 'T'
+const natEq2: t.NatEq<t.Zero, t.One> = 'F'
 
-type option_3 = t.Sub<t._5, t._2>
-const x35: t.And<t.IsSome<option_3>, t.NatEq<t.TOptionUnsafeGet<option_3>, t._3>> = 'true'
+const add1: t.NatEq<t.Add<t.Zero, t.One>, t.One> = 'T'
+const add2: t.NatEq<t.Add<t.Five, t.Five>, t.Ten> = 'T'
 
-const x37: t.Lte<t._0, t._0> = 'true'
-const x38: t.Lte<t._0, t._1> = 'true'
-const x39: t.Lt<t._0, t._0> = 'false'
-const x40: t.Lt<t._0, t._1> = 'true'
-const x41: t.Gt<t._2, t._1> = 'true'
-const x42: t.Gt<t._1, t._1> = 'false'
-const x43: t.Gte<t._1, t._1> = 'true'
+const unafesub1: t.NatEq<t.UnsafeSub<t.Zero, t.One>, t.Zero> = 'T'
+const unafesub2: t.NatEq<t.UnsafeSub<t.Five, t.Five>, t.Zero> = 'T'
 
-const x44: t.NatEq<t.Mod<t._5, t._3>, t._2> = 'true'
+const sub1: t.Sub<t.Five, t.Five> = {
+  isNone: 'F',
+  _A: {
+    isZero: 'T',
+    prev: null as never
+  }
+}
 
-const min1: t.NatEq<t.Min<t._2, t._1>, t._1> = 'true'
-const min2: t.NatEq<t.Max<t._2, t._1>, t._2> = 'true'
+const mult1: t.NatEq<t.Mult<t.Zero, t.Five>, t.Zero> = 'T'
+const mult2: t.NatEq<t.Mult<t.One, t.Five>, t.Five> = 'T'
+const mult3: t.NatEq<t.Mult<t.Two, t.Five>, t.Ten> = 'T'
 
-const sc1: t.StringContains<'a', 'b'> = 'false'
-const sc2: t.StringContains<'a' | 'b', 'b'> = 'true'
+type option_3 = t.Sub<t.Five, t.Two>
+const optionUnsafeGet1: t.And<t.IsSome<option_3>, t.NatEq<t.OptionUnsafeGet<option_3>, t.Three>> = 'T'
 
-const oo1: t.ObjectOmit<{ a: string; b: number }, 'b'> = { a: 'a' }
-const oo2: t.ObjectOmit<{ a?: string; b: number }, 'b'> = { a: 'a' }
-const oo3: t.ObjectOmit<{ a?: string; b: number }, 'b'> = {}
+const lte1: t.Lte<t.Zero, t.Zero> = 'T'
+const lte2: t.Lte<t.Zero, t.One> = 'T'
+const lte3: t.Lte<t.One, t.Zero> = 'F'
 
-const od1: t.ObjectDiff<{ a: string; b: number }, { b: number }> = { a: 'a' }
-const od2: t.ObjectDiff<{ a: string; b: number }, { b: number }> = { a: 'a', b: 1 }
+const lt1: t.Lt<t.Zero, t.Zero> = 'F'
+const lt2: t.Lt<t.Zero, t.One> = 'T'
+const lt3: t.Gt<t.Two, t.One> = 'T'
+const lt4: t.Gt<t.One, t.One> = 'F'
+const lt5: t.Gte<t.One, t.One> = 'T'
 
-const oov1: t.ObjectOverwrite<{ a: number }, { a: string }>['a'] = 'a'
-const oov2: t.ObjectOverwrite<{ a: string }, { a: number }>['a'] = 1
+const mod1: t.NatEq<t.Mod<t.Five, t.Three>, t.Two> = 'T'
 
-const se1: t.StringEq<'a', 'b'> = 'false'
-const se2: t.StringEq<'a', 'a'> = 'true'
-const se3: t.StringEq<'', ''> = 'true'
+const min1: t.NatEq<t.Min<t.Two, t.One>, t.One> = 'T'
+const min2: t.NatEq<t.Max<t.Two, t.One>, t.Two> = 'T'
 
-const ohk1: t.ObjectHasKey<{ a: number }, 'a'> = 'true'
-const ohk2: t.ObjectHasKey<{ a: number }, 'b'> = 'false'
+const stringContains1: t.StringContains<'a', 'b'> = 'F'
+const stringContains2: t.StringContains<'a' | 'b', 'b'> = 'T'
+
+const objectOmit1: t.ObjectOmit<{ a: string; b: number }, 'b'> = { a: 'a' }
+const objectOmit2: t.ObjectOmit<{ a?: string; b: number }, 'b'> = { a: 'a' }
+const objectOmit3: t.ObjectOmit<{ a?: string; b: number }, 'b'> = {}
+
+const objectDiff1: t.ObjectDiff<{ a: string; b: number }, { b: number }> = { a: 'a' }
+const objectDiff2: t.ObjectDiff<{ a: string; b: number }, { b: number }> = { a: 'a', b: 1 }
+
+const objectOverwrite1: t.ObjectOverwrite<{ a: number }, { a: string }>['a'] = 'a'
+const objectOverwrite2: t.ObjectOverwrite<{ a: string }, { a: number }>['a'] = 1
+
+const stringEq1: t.StringEq<'a', 'b'> = 'F'
+const stringEq2: t.StringEq<'a', 'a'> = 'T'
+const stringEq3: t.StringEq<'', ''> = 'T'
+
+const objectHasKey1: t.ObjectHasKey<{ a: number }, 'a'> = 'T'
+const objectHasKey2: t.ObjectHasKey<{ a: number }, 'b'> = 'F'
 
 type State = { a: string; b: boolean; c: number }
 
@@ -90,10 +114,24 @@ const e3: E1 = { a: 'foo', b: true }
 // $ExpectError Type 'number' is not assignable to type 'undefined'
 const e4: E1 = { a: 'foo', b: true, c: 1 }
 
-type TTO = t.TupleToObject<[number, string]>
-const tto1: TTO = { 0: 1, 1: 'foo' }
+const tupleToObject1: t.TupleToObject<[number, string]> = { 0: 1, 1: 'foo' }
 
-type FIVE = t.NumberToString[5]
-const n2s1: FIVE = '5'
-// $ExpectError Type '"6"' is not assignable to type '"5"'
-const n2s2: FIVE = '6'
+const tupleLengthAsNumber1: t.TupleLengthAsNumber<[number]> = 1
+const tupleLengthAsNumber2: t.TupleLengthAsNumber<[number, string]> = 2
+const tupleLengthAsNumber3: t.TupleLengthAsNumber<[number, string, boolean]> = 3
+
+type T2THList1 = t.TupleToHList<[number]>
+type T2THList2 = t.TupleToHList<[number, string]>
+type T2THList3 = t.TupleToHList<[number, string, boolean]>
+
+const typeAt1: t.UnsafeTypeAt<T2THList3, t.One> = 'foo'
+const typeAt2: t.UnsafeTypeAt<T2THList3, t.Two> = true
+
+const tHListIntegerLength1: t.HListLengthAsNumber<T2THList3> = 3
+
+type Tuple1 = t.HListToTuple<T2THList3>
+
+const natToString0: t.NatToString<t.Zero> = '0'
+const natToString1: t.NatToString<t.One> = '1'
+const natToString2: t.NatToString<t.Two> = '2'
+const natToString10: t.NatToString<t.Ten> = '10'
