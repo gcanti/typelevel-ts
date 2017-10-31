@@ -28,7 +28,7 @@
     "prettier": "1.5.2",
     "tslint": "4.4.2",
     "tslint-config-standard": "4.0.0",
-    "typescript": "^2.5.2",
+    "typescript": "2.6.0-rc",
     "typings-checker": "1.1.2"
   },
   "tags": [],
