@@ -172,6 +172,8 @@ export type ObjectDiff<O1 extends O2, O2> = ObjectOmit<O1, keyof O2> & Partial<O
 
 export type ObjectClean<T> = Pick<T, keyof T>
 
+export type ObjectOptional<O, K extends keyof O> = ObjectOmit<O, K> & Partial<Pick<O, K>>
+
 export type PickExact<O, K extends keyof O> = Pick<O, K> & { [K1 in StringOmit<keyof O, K>]?: never }
 
 //

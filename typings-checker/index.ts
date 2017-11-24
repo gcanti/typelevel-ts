@@ -96,6 +96,10 @@ const objectDiff2: t.ObjectDiff<{ a: string; b: number }, { b: number }> = { a: 
 const objectOverwrite1: t.ObjectOverwrite<{ a: number }, { a: string }>['a'] = 'a'
 const objectOverwrite2: t.ObjectOverwrite<{ a: string }, { a: number }>['a'] = 1
 
+const objectOptional1: t.ObjectOptional<{ a: boolean; b: number }, 'a'> = { b: 42 }
+const objectOptional2: t.ObjectOptional<{ a: boolean; b: number }, 'b'> = { a: true }
+const objectOptional3: t.ObjectOptional<{ a: boolean; b: number }, 'a' | 'b'> = {}
+
 const stringEq1: t.StringEq<'a', 'b'> = 'F'
 const stringEq2: t.StringEq<'a', 'a'> = 'T'
 const stringEq3: t.StringEq<'', ''> = 'T'
