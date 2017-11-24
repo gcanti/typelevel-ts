@@ -12,6 +12,11 @@
 **Note**: Gaps between patch versions are faulty/broken releases.
 **Note**: A feature tagged as Experimental is in a high state of flux, you're at risk of it changing without notice.
 
+# 0.2.1
+
+- **New Feature**
+  - add `ObjectOptional`, closes #13 (@thepheer)
+
 # 0.2.0
 
 - **Breaking Change**
