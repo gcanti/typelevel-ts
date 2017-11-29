@@ -139,3 +139,20 @@ const natToString0: t.NatToString<t.Zero> = '0'
 const natToString1: t.NatToString<t.One> = '1'
 const natToString2: t.NatToString<t.Two> = '2'
 const natToString10: t.NatToString<t.Ten> = '10'
+
+//
+// Required
+//
+type R1 = {
+  a: string
+  b?: number
+  c?: boolean | null | undefined
+}
+type RR1 = t.Required<R1>
+// $ExpectError Property 'a' is missing in type '{}'
+const r1: RR1 = {}
+// $ExpectError Property 'b' is missing in type '{ a: string; }'
+const r2: RR1 = { a: 'a' }
+// $ExpectError Property 'c' is missing in type '{ a: string; b: number; }'
+const r3: RR1 = { a: 'a', b: 1 }
+const r4: RR1 = { a: 'a', b: 1, c: true }

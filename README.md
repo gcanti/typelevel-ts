@@ -1,19 +1,19 @@
 # Compatibility
 
-- `0.2.0+` for TypeScript `2.5.2+`
-- `0.1.3` for TypeScript `2.4.1+`
+* `0.2.0+` for TypeScript `2.5.2+`
+* `0.1.3` for TypeScript `2.4.1+`
 
 # Credits
 
 Adapted from
 
-- https://github.com/Microsoft/TypeScript/issues/14833
-- https://github.com/Microsoft/TypeScript/issues/16392
-- https://github.com/Microsoft/TypeScript/issues/12215
+* https://github.com/Microsoft/TypeScript/issues/14833
+* https://github.com/Microsoft/TypeScript/issues/16392
+* https://github.com/Microsoft/TypeScript/issues/12215
 
 ## Related projects
 
-- [typical - playground for type-level primitives in TypeScript](https://github.com/tycho01/typical) by @tycho01
+* [typical - playground for type-level primitives in TypeScript](https://github.com/tycho01/typical) by @tycho01
 
 # Examples
 
@@ -95,4 +95,3 @@ class Foo extends React.Component<{ bar: string; baz: number }> {}
 const FilledFoo = withProps(Foo, { baz: 1 })
 const x = <FilledFoo bar="bar" /> // ok
 ```
-

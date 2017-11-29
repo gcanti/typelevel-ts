@@ -176,6 +176,12 @@ export type ObjectOptional<O, K extends keyof O> = ObjectOmit<O, K> & Partial<Pi
 
 export type PickExact<O, K extends keyof O> = Pick<O, K> & { [K1 in StringOmit<keyof O, K>]?: never }
 
+export type Required<T> = { [P in Purify<keyof T>]: NonNullable<T[P]> }
+
+export type Purify<T extends string> = { [P in T]: T }[T]
+
+export type NonNullable<T> = T & {}
+
 //
 // hlists
 //
