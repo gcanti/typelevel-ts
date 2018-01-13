@@ -140,6 +140,11 @@ const natToString1: t.NatToString<t.One> = '1'
 const natToString2: t.NatToString<t.Two> = '2'
 const natToString10: t.NatToString<t.Ten> = '10'
 
+type HListConcat1 = t.HListToTuple<t.HListConcat<t.TupleToHList<[number, null]>, t.TupleToHList<[string]>>>
+const hlistConcat1: HListConcat1 = [1, null, 'a']
+// $ExpectError Type 'number' is not assignable to type 'string'
+const hlistConcat2: HListConcat1 = [1, null, 1]
+
 //
 // Required
 //

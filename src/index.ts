@@ -247,6 +247,11 @@ export type HListToTuple<L extends HList> = {
   ]
 }[HListLengthAsString<L>]
 
+export type HListConcat<L1 extends HList, L2 extends HList> = {
+  T: L2
+  F: HCons<Head<L1>, HListConcat<Tail<L1>, L2>>
+}[IsHNil<L1>]
+
 //
 // tuples
 //
