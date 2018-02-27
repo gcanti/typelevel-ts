@@ -11,6 +11,8 @@
       "typings-checker --allow-expect-error --project typings-checker/tsconfig.json typings-checker/index.ts",
     "prettier":
       "prettier --no-semi --single-quote --print-width 120 --parser typescript --list-different \"{src,typings-checker}/**/*.ts\"",
+    "fix-prettier":
+      "prettier --no-semi --single-quote --print-width 120 --parser typescript --write \"{src,typings-checker}/**/*.ts\"",
     "test": "npm run prettier && npm run lint && npm run typings-checker",
     "clean": "rm -rf lib/*",
     "build": "npm run clean && tsc"
@@ -27,7 +29,7 @@
   "homepage": "https://github.com/gcanti/typelevel-ts",
   "dependencies": {},
   "devDependencies": {
-    "prettier": "1.8.2",
+    "prettier": "^1.11.0",
     "tslint": "4.4.2",
     "tslint-config-standard": "4.0.0",
     "typescript": "2.6.2",
