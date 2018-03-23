@@ -68,11 +68,19 @@ console.log(v2.zip(v1.append(v1))) // Vector([[2,1],[3,1]])
 
 ```ts
 import * as React from 'react'
-import { ObjectDiff } from 'typelevel-ts'
+import { ObjectDiff } from 'typelevel-ts';
+import isUndefined from 'lodash/isUndefined';
+import omitBy from 'lodash/omitBy';
 
 function withDefaults<D, A extends D>(C: React.ComponentType<A>, defaults: D): React.SFC<ObjectDiff<A, D>> {
-  return props => <C {...defaults} {...props} />
-}
+  return props => {
+    // If a prop is provided with a value of `undefined`, we want the default prop to take
+    // precendence. This ensures the behaviour matches that of React's built-in `defaultProps`
+    // static property on components.
+    const propsMinusUndefined = omitBy(props, isUndefined);
+    return <C {...defaults} {...propsMinusUndefined} />;
+  };
+};
 
 class Foo extends React.Component<{ bar: string; baz: number }> {}
 const DefaultedFoo = withDefaults(Foo, { baz: 1 })
