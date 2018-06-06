@@ -120,6 +120,8 @@ const e4: E1 = { a: 'foo', b: true, c: 1 }
 
 const tupleToObject1: t.TupleToObject<[number, string]> = { 0: 1, 1: 'foo' }
 
+const tupleLengthAsString1: t.TupleLengthAsString<[number]> = '1'
+
 const tupleLengthAsNumber1: t.TupleLengthAsNumber<[number]> = 1
 const tupleLengthAsNumber2: t.TupleLengthAsNumber<[number, string]> = 2
 const tupleLengthAsNumber3: t.TupleLengthAsNumber<[number, string, boolean]> = 3

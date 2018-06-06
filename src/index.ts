@@ -256,16 +256,18 @@ export type HListConcat<L1 extends HList, L2 extends HList> = {
 // tuples
 //
 
+export type AnyTuple = Array<any> & { '0': any }
+
 export type TupleToObject<T> = ObjectOmit<T, keyof Array<any>>
 
-export type TupleLengthAsString<T extends [any], I extends keyof Increment = '0'> = {
+export type TupleLengthAsString<T extends AnyTuple, I extends keyof Increment = '0'> = {
   T: TupleLengthAsString<T, Increment[I]>
   F: I
 }[ObjectHasKey<T, I>]
 
-export type TupleLengthAsNumber<T extends [any]> = StringToNumber[TupleLengthAsString<T>]
+export type TupleLengthAsNumber<T extends AnyTuple> = StringToNumber[TupleLengthAsString<T>]
 
-export type TupleToHList<T extends [any], I extends keyof Increment & keyof T = '0', L extends HList = HNil> = {
+export type TupleToHList<T extends AnyTuple, I extends keyof Increment & keyof T = '0', L extends HList = HNil> = {
   T: TupleToHList<T, Increment[I], HCons<T[I], L>>
   F: Reverse<L>
 }[ObjectHasKey<T, I>]
