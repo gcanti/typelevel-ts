@@ -9,12 +9,12 @@
   "typings": "lib/index.d.ts",
   "scripts": {
     "lint": "tslint src/**/*.ts",
-    "typings-checker": "typings-checker --allow-expect-error --project typings-checker/tsconfig.json typings-checker/index.ts",
     "prettier": "prettier --no-semi --single-quote --print-width 120 --parser typescript --list-different \"{src,typings-checker}/**/*.ts\"",
     "fix-prettier": "prettier --no-semi --single-quote --print-width 120 --parser typescript --write \"{src,typings-checker}/**/*.ts\"",
-    "test": "npm run prettier && npm run lint && npm run typings-checker",
+    "test": "npm run prettier && npm run lint && npm run dtslint",
     "clean": "rm -rf lib/*",
-    "build": "npm run clean && tsc"
+    "build": "npm run clean && tsc",
+    "dtslint": "dtslint dtslint"
   },
   "repository": {
     "type": "git",
@@ -28,11 +28,13 @@
   "homepage": "https://github.com/gcanti/typelevel-ts",
   "dependencies": {},
   "devDependencies": {
+    "@types/react": "^16.3.17",
+    "dtslint": "^0.3.0",
     "prettier": "^1.13.4",
+    "react": "^16.4.0",
     "tslint": "4.4.2",
     "tslint-config-standard": "4.0.0",
-    "typescript": "2.8.3",
-    "typings-checker": "^2.0.0"
+    "typescript": "^2.9.2"
   },
   "tags": [],
   "keywords": []

@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { ObjectDiff } from 'typelevel-ts'
+import { Diff } from 'typelevel-ts'
 
-function withDefaults<D, A extends D>(C: React.ComponentType<A>, defaults: D): React.SFC<ObjectDiff<A, D>> {
+function withDefaults<A extends D, D extends object>(C: React.ComponentType<A>, defaults: D): React.SFC<Diff<A, D>> {
   return props => <C {...defaults} {...props} />
 }
 

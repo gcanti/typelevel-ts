@@ -1,7 +1,7 @@
-import { ObjectOmit } from 'typelevel-ts'
+import { Omit } from 'typelevel-ts'
 import * as React from 'react'
 
-function withProps<D, P extends D>(C: React.ComponentType<P>, values: D): React.SFC<ObjectOmit<P, keyof D>> {
+function withProps<D extends object, P extends D>(C: React.ComponentType<P>, values: D): React.SFC<Omit<P, keyof D>> {
   return props => <C {...props} {...values} />
 }
 
