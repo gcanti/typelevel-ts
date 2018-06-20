@@ -1,4 +1,4 @@
-import { AnyTuple, Equals, Exact, Omit, Overwrite, RowLacks, DeepReadonly } from '../src'
+import { AnyTuple, Equals, Exact, Omit, Overwrite, Diff, RowLacks, DeepReadonly } from '../src'
 
 //
 // Equals
@@ -27,14 +27,20 @@ type Overwrite1 = Equals<Overwrite<{ a: string; b: number }, { b: boolean }>, { 
 type Overwrite2 = Equals<Overwrite<{ a: string }, { b: boolean }>, { a: string; b: boolean }> // $ExpectType "T"
 
 //
+// Diff
+//
+
+type Diff1 = Equals<Diff<{ a: string; b: number }, 'b'>, { a: string; b?: number }> // $ExpectType "T"
+
+//
 // RowLacks
 //
 
-type RowLacks1 = RowLacks<{ a: string; b: number }, 'a' | 'c'>
+declare function rowlacks1(x: RowLacks<{ a: string; b: number }, 'a'>): void
 // $ExpectError
-const rowlacks1: RowLacks1 = { a: 'foo' }
-type RowLacks2 = RowLacks<{ b: number }, 'a' | 'c'>
-const rowlacks2: RowLacks2 = { b: 1 }
+rowlacks1({ a: 'foo', b: 1 })
+declare function rowlacks2(x: RowLacks<{ a: string; b: number }, 'c'>): void
+rowlacks2({ a: 'foo', b: 1 })
 
 //
 // Exact
