@@ -92,3 +92,14 @@ declare const x: ReadonlyFoo
 // $ExpectError
 x.bar.quux[1].barbaz = 1
 ```
+
+## TaggedUnionMember<A extends object, Tag extends keyof A, Value extends A[Tag]>
+
+Extracts the type of a member of a tagged union
+
+```ts
+type A = { tag: 'A'; a: string }
+type B = { tag: 'B'; b: number }
+type C = A | B
+TaggedUnionMember<TaggedUnionMemberC, 'tag', 'A'> // A
+```

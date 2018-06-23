@@ -32,3 +32,11 @@ export interface DeepReadonlyArray<A> extends ReadonlyArray<DeepReadonly<A>> {}
 export type DeepReadonlyObject<A> = { readonly [K in keyof A]: DeepReadonly<A[K]> }
 
 export type DeepReadonly<A> = A extends Array<infer B> ? DeepReadonlyArray<B> : DeepReadonlyObject<A>
+
+/**
+ * Extracts the type of a member of a tagged union
+ */
+export type TaggedUnionMember<A extends object, Tag extends keyof A, Value extends A[Tag]> = Extract<
+  A,
+  Record<Tag, Value>
+>

@@ -1,4 +1,4 @@
-import { AnyTuple, Equals, Exact, Omit, Overwrite, Diff, RowLacks, DeepReadonly, KeysOfType } from '../src'
+import { AnyTuple, Equals, Exact, Omit, Overwrite, Diff, RowLacks, DeepReadonly, KeysOfType, TaggedUnionMember } from '../src'
 
 //
 // Equals
@@ -93,3 +93,12 @@ type DeepReadonly3 = ReadonlyFoo['bar']['quux'][number] // $ExpectType DeepReado
 declare const readonly1: ReadonlyFoo
 // $ExpectError
 readonly1.bar.quux[1].barbaz = 1
+
+//
+// TaggedUnionMember
+//
+
+type TaggedUnionMemberA = { tag: 'A'; a: string }
+type TaggedUnionMemberB = { tag: 'B'; b: number }
+type TaggedUnionMemberC = TaggedUnionMemberA | TaggedUnionMemberB
+type TaggedUnionMember1 = Equals<TaggedUnionMember<TaggedUnionMemberC, 'tag', 'A'>, TaggedUnionMemberA> // $ExpectType "T"
