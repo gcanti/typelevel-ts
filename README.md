@@ -101,5 +101,5 @@ Extracts the type of a member of a tagged union
 type A = { tag: 'A'; a: string }
 type B = { tag: 'B'; b: number }
 type C = A | B
-TaggedUnionMember<TaggedUnionMemberC, 'tag', 'A'> // A
+TaggedUnionMember<C, 'tag', 'A'> // A
 ```
