@@ -1,4 +1,4 @@
-import { AnyTuple, Equals, Exact, Omit, Overwrite, Diff, RowLacks, DeepReadonly } from '../src'
+import { AnyTuple, Equals, Exact, Omit, Overwrite, Diff, RowLacks, DeepReadonly, KeysOfType } from '../src'
 
 //
 // Equals
@@ -52,6 +52,13 @@ declare const exact2: { a: string; b: number }
 exactf1(exact1)
 // $ExpectError
 exactf1(exact2)
+
+//
+// KeysOfType
+//
+type KeysOfType1 = Equals<KeysOfType<{a: string, b: never}, never>, "b"> // $ExpectType "T"
+type KeysOfType2 = Equals<KeysOfType<{a: string, b: string}, string>, "a" | "b"> // $ExpectType "T"
+type KeysOfType3 = Equals<KeysOfType<{a: string, b: string | boolean}, string>, "a"> // $ExpectType "T"
 
 //
 // AnyTuple

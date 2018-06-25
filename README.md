@@ -54,6 +54,14 @@ f(x)
 f(y)
 ```
 
+## KeysOfType<A extends object, B>
+
+Picks only the keys of a certain type
+
+```ts
+KeysOfType<{a: string, b: string | boolean, c: boolean, d: string}, string> // "a" | "d"
+```
+
 ## AnyTuple
 
 ```ts

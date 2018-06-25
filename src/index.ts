@@ -13,6 +13,11 @@ export type Overwrite<A extends object, B extends object> = Pick<A, Exclude<keyo
 export type Diff<A extends object, K extends keyof A> = Omit<A, K> & Partial<Pick<A, K>>
 
 /**
+ * Picks only the keys of a certain type
+ */
+export type KeysOfType<A extends object, B> = { [K in keyof A]: A[K] extends B ? K : never }[keyof A]
+
+/**
  * Encodes the constraint that a given object `A`
  * does not contain specific keys `K`
  */
