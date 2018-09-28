@@ -23,7 +23,7 @@ export type KeysOfType<A extends object, B> = { [K in keyof A]: A[K] extends B ?
  */
 export type RowLacks<A extends object, K extends string | number | symbol> = A & Record<Extract<keyof A, K>, never>
 
-export type Exact<A extends object, B extends A> = A & Record<Exclude<keyof B, keyof A>, undefined>
+export type Exact<A extends object, B extends A> = A & Record<Exclude<keyof B, keyof A>, never>
 
 export type AnyTuple = Array<any> & { '0': any }
 

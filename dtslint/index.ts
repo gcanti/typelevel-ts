@@ -1,4 +1,15 @@
-import { AnyTuple, Equals, Exact, Omit, Overwrite, Diff, RowLacks, DeepReadonly, KeysOfType, TaggedUnionMember } from '../src'
+import {
+  AnyTuple,
+  Equals,
+  Exact,
+  Omit,
+  Overwrite,
+  Diff,
+  RowLacks,
+  DeepReadonly,
+  KeysOfType,
+  TaggedUnionMember
+} from '../src'
 
 //
 // Equals
@@ -49,16 +60,19 @@ rowlacks2({ a: 'foo', b: 1 })
 declare function exactf1<T extends Exact<{ a: string }, T>>(a: T): void
 declare const exact1: { a: string }
 declare const exact2: { a: string; b: number }
+declare const exact3: { a: string; b: any }
 exactf1(exact1)
 // $ExpectError
 exactf1(exact2)
+// $ExpectError
+exactf1(exact3)
 
 //
 // KeysOfType
 //
-type KeysOfType1 = Equals<KeysOfType<{a: string, b: never}, never>, "b"> // $ExpectType "T"
-type KeysOfType2 = Equals<KeysOfType<{a: string, b: string}, string>, "a" | "b"> // $ExpectType "T"
-type KeysOfType3 = Equals<KeysOfType<{a: string, b: string | boolean}, string>, "a"> // $ExpectType "T"
+type KeysOfType1 = Equals<KeysOfType<{ a: string; b: never }, never>, 'b'> // $ExpectType "T"
+type KeysOfType2 = Equals<KeysOfType<{ a: string; b: string }, string>, 'a' | 'b'> // $ExpectType "T"
+type KeysOfType3 = Equals<KeysOfType<{ a: string; b: string | boolean }, string>, 'a'> // $ExpectType "T"
 
 //
 // AnyTuple
