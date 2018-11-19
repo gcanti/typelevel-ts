@@ -103,3 +103,13 @@ type B = { tag: 'B'; b: number }
 type C = A | B
 TaggedUnionMember<C, 'tag', 'A'> // A
 ```
+
+## RequiredKeys<A extends object> and OptionalKeys<A extends object>
+
+Extracts required or optional keys as a literal type union
+
+```ts
+type A = { a: string; b: number; x?: string; y?: number }
+RequiredKeys<A> // "a" | "b"
+OptionalKeys<A> // "x" | "y"
+```
