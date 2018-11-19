@@ -8,7 +8,9 @@ import {
   RowLacks,
   DeepReadonly,
   KeysOfType,
-  TaggedUnionMember
+  TaggedUnionMember,
+  RequiredKeys,
+  OptionalKeys
 } from '../src'
 
 //
@@ -116,3 +118,29 @@ type TaggedUnionMemberA = { tag: 'A'; a: string }
 type TaggedUnionMemberB = { tag: 'B'; b: number }
 type TaggedUnionMemberC = TaggedUnionMemberA | TaggedUnionMemberB
 type TaggedUnionMember1 = Equals<TaggedUnionMember<TaggedUnionMemberC, 'tag', 'A'>, TaggedUnionMemberA> // $ExpectType "T"
+
+//
+// RequiredKeys
+//
+
+type BarForRequired = {
+  a: number
+  b: Date
+  x?: string
+  y?: Date
+}
+
+type BarRequiredKeys = RequiredKeys<BarForRequired> // $ExpectType "a" | "b"
+
+//
+// OptionalKeys
+//
+
+type BarForOptional = {
+  a: number
+  b: Date
+  x?: string
+  y?: Date
+}
+
+type BarOptionalKeys = OptionalKeys<BarForOptional> // $ExpectType "x" | "y"
