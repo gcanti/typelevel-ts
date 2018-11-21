@@ -15,7 +15,7 @@ export type Diff<A extends object, K extends keyof A> = Omit<A, K> & Partial<Pic
 /**
  * Picks only the keys of a certain type
  */
-export type KeysOfType<A extends object, B> = { [K in keyof A]: A[K] extends B ? K : never }[keyof A]
+export type KeysOfType<A extends object, B> = { [K in keyof A]-?: A[K] extends B ? K : never }[keyof A]
 
 /**
  * Encodes the constraint that a given object `A`

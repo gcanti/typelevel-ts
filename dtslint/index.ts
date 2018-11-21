@@ -75,6 +75,7 @@ exactf1(exact3)
 type KeysOfType1 = Equals<KeysOfType<{ a: string; b: never }, never>, 'b'> // $ExpectType "T"
 type KeysOfType2 = Equals<KeysOfType<{ a: string; b: string }, string>, 'a' | 'b'> // $ExpectType "T"
 type KeysOfType3 = Equals<KeysOfType<{ a: string; b: string | boolean }, string>, 'a'> // $ExpectType "T"
+type KeysOfType4 = Equals<KeysOfType<{ a: string; b?: string }, string>, 'a'> // $ExpectType "T"
 
 //
 // AnyTuple
