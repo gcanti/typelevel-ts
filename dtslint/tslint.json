@@ -15,6 +15,7 @@
     "no-var-keyword": false,
     "no-string-throw": false,
     "no-sparse-arrays": false,
-    "object-literal-key-quotes": false
+    "object-literal-key-quotes": false,
+    "whitespace": false
   }
 }
