@@ -45,7 +45,9 @@ export type TaggedUnionMember<A extends object, Tag extends keyof A, Value exten
  * Extracts required keys as a literal type union
  */
 export type RequiredKeys<T> = { [K in keyof T]: {} extends Pick<T, K> ? never : K } extends { [_ in keyof T]: infer U }
-  ? U
+  ? {} extends U
+    ? never
+    : U
   : never
 
 /**
@@ -54,5 +56,7 @@ export type RequiredKeys<T> = { [K in keyof T]: {} extends Pick<T, K> ? never : 
 export type OptionalKeys<T> = { [K in keyof T]: T extends Record<K, T[K]> ? never : K } extends {
   [_ in keyof T]: infer U
 }
-  ? U
+  ? {} extends U
+    ? never
+    : U
   : never
