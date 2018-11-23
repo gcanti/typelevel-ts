@@ -13,6 +13,11 @@
 **Note**: Gaps between patch versions are faulty/broken releases. **Note**: A feature tagged as Experimental is in a
 high state of flux, you're at risk of it changing without notice.
 
+# 0.3.4
+
+- **Polish**
+  - handle empty object and primitives in `RequiredKeys` and `OptionalKeys` (@ajafff)
+
 # 0.3.3
 
 - **New Feature**
