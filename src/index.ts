@@ -51,6 +51,8 @@ export type RequiredKeys<T> = { [K in keyof T]: {} extends Pick<T, K> ? never : 
 /**
  * Extracts optional keys as a literal type union
  */
-export type OptionalKeys<T> = { [K in keyof T]: {} extends Pick<T, K> ? K : never } extends { [_ in keyof T]: infer U }
+export type OptionalKeys<T> = { [K in keyof T]: T extends Record<K, T[K]> ? never : K } extends {
+  [_ in keyof T]: infer U
+}
   ? U
   : never

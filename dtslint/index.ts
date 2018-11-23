@@ -132,6 +132,7 @@ type BarForRequired = {
 }
 
 type BarRequiredKeys = RequiredKeys<BarForRequired> // $ExpectType "a" | "b"
+type RequiredKeysIndexSignature = RequiredKeys<{[x: string]: any; a: number; b: Date; x?: string; y?: Date}> // $ExpectType "a" | "b"
 
 //
 // OptionalKeys
@@ -145,3 +146,4 @@ type BarForOptional = {
 }
 
 type BarOptionalKeys = OptionalKeys<BarForOptional> // $ExpectType "x" | "y"
+type OptionalKeysIndexSignature = OptionalKeys<{[x: string]: any; a: number; b: Date; x?: string; y?: Date}> // $ExpectType "x" | "y"
