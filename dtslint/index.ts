@@ -23,6 +23,10 @@ type Equals3 = Equals<'a' | 'b', 'a' | 'b'> // $ExpectType "T"
 type Equals4 = Equals<'a' | 'b', 'a' | 'c'> // $ExpectType "F"
 type Equals5 = Equals<Array<string>, Array<string>> // $ExpectType "T"
 type Equals6 = Equals<Array<string>, Array<number>> // $ExpectType "F"
+type Equals7 = Equals<any[], [number][]> // $ExpectType "F"
+type Equals8 = Equals<any[], unknown[]> // $ExpectType "F"
+type Equals9 = Equals<Map<number, any>, Map<any, number>> // $ExpectType "F"
+type Equals10 = Equals<{ a: string } & { b: number }, { a: string; b: number }> // $ExpectType "T"
 
 //
 // Omit
@@ -38,6 +42,7 @@ type Omit3 = Equals<Omit<{ a: string; b: number }, 'a' | 'c'>, { b: number }> //
 
 type Overwrite1 = Equals<Overwrite<{ a: string; b: number }, { b: boolean }>, { a: string; b: boolean }> // $ExpectType "T"
 type Overwrite2 = Equals<Overwrite<{ a: string }, { b: boolean }>, { a: string; b: boolean }> // $ExpectType "T"
+type Overwrite3 = Equals<Overwrite<{ a: string; b: number }, { b?: boolean }>, { a: string; b?: boolean }> // $ExpectType "T"
 
 //
 // Diff
@@ -132,7 +137,7 @@ type BarForRequired = {
 }
 
 type BarRequiredKeys = RequiredKeys<BarForRequired> // $ExpectType "a" | "b"
-type RequiredKeysIndexSignature = RequiredKeys<{[x: string]: any; a: number; b: Date; x?: string; y?: Date}> // $ExpectType "a" | "b"
+type RequiredKeysIndexSignature = RequiredKeys<{ [x: string]: any; a: number; b: Date; x?: string; y?: Date }> // $ExpectType "a" | "b"
 type RequiredKeysEmpty = RequiredKeys<{}> // $ExpectType never
 
 //
@@ -147,5 +152,5 @@ type BarForOptional = {
 }
 
 type BarOptionalKeys = OptionalKeys<BarForOptional> // $ExpectType "x" | "y"
-type OptionalKeysIndexSignature = OptionalKeys<{[x: string]: any; a: number; b: Date; x?: string; y?: Date}> // $ExpectType "x" | "y"
+type OptionalKeysIndexSignature = OptionalKeys<{ [x: string]: any; a: number; b: Date; x?: string; y?: Date }> // $ExpectType "x" | "y"
 type OptionalKeysEmpty = OptionalKeys<{}> // $ExpectType never

@@ -1,16 +1,24 @@
+export type Compact<A> = { [K in keyof A]: A[K] }
+
 /**
  * Returns the string literal 'T' if `A` and `B` are equal types, 'F' otherwise
  */
-export type Equals<A, B> = [A] extends [B] ? ([B] extends [A] ? 'T' : 'F') : 'F'
+export type Equals<A, B> = (<C>() => C extends Compact<A> ? 'T' : 'F') extends (<C>() => C extends Compact<B>
+  ? 'T'
+  : 'F')
+  ? 'T'
+  : 'F'
 
 /**
  * Extracts a super-type of `A` identified by its keys `K`
  */
 export type Omit<A extends object, K extends string | number | symbol> = Pick<A, Exclude<keyof A, K>>
 
-export type Overwrite<A extends object, B extends object> = Pick<A, Exclude<keyof A, keyof B>> & B
+export type Overwrite<A extends object, B extends object> = Compact<{ [K in Exclude<keyof A, keyof B>]: A[K] } & B>
 
-export type Diff<A extends object, K extends keyof A> = Omit<A, K> & Partial<Pick<A, K>>
+export type Diff<A extends object, OK extends keyof A> = Compact<
+  { [K in Exclude<keyof A, OK>]: A[K] } & { [K in OK]?: A[K] }
+>
 
 /**
  * Picks only the keys of a certain type

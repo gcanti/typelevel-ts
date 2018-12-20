@@ -1,6 +1,6 @@
 {
   "name": "typelevel-ts",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "Type level programming in TypeScript",
   "files": [
     "lib"
@@ -29,7 +29,7 @@
   "dependencies": {},
   "devDependencies": {
     "@types/react": "^16.3.17",
-    "dtslint": "^0.3.0",
+    "dtslint": "^0.4.2",
     "prettier": "^1.14.3",
     "react": "^16.4.0",
     "tslint": "4.4.2",
