@@ -31,8 +31,8 @@
   "devDependencies": {
     "@types/react": "^16.3.17",
     "docs-ts": "github:gcanti/docs-ts",
-    "dtslint": "^0.4.2",
-    "prettier": "^1.14.3",
+    "dtslint": "^0.5.3",
+    "prettier": "^1.16.4",
     "react": "^16.4.0",
     "tslint": "4.4.2",
     "tslint-config-standard": "4.0.0",
