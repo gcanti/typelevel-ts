@@ -2,7 +2,6 @@ import {
   AnyTuple,
   Equals,
   Exact,
-  Omit,
   Overwrite,
   Diff,
   RowLacks,
@@ -11,7 +10,7 @@ import {
   TaggedUnionMember,
   RequiredKeys,
   OptionalKeys
-} from '../src'
+} from '../../src'
 
 //
 // Equals
@@ -32,23 +31,24 @@ type Equals10 = Equals<{ a: string } & { b: number }, { a: string; b: number }> 
 // Omit
 //
 
-type Omit1 = Equals<Omit<{ a: string; b: number }, 'a'>, { b: number }> // $ExpectType "T"
-type Omit2 = Equals<Omit<{ a: string; b: number }, 'a' | 'b'>, {}> // $ExpectType "T"
-type Omit3 = Equals<Omit<{ a: string; b: number }, 'a' | 'c'>, { b: number }> // $ExpectType "T"
+type Omit1 = Omit<{ a: string; b: number }, 'a'> // $ExpectType Pick<{ a: string; b: number; }, "b">
+type Omit2 = Omit<{ a: string; b: number }, 'a' | 'b'> // $ExpectType Pick<{ a: string; b: number; }, never>
+type Omit3 = Omit<{ a: string; b: number }, 'a' | 'c'> // $ExpectType Pick<{ a: string; b: number; }, "b">
 
 //
 // Overwrite
 //
 
-type Overwrite1 = Equals<Overwrite<{ a: string; b: number }, { b: boolean }>, { a: string; b: boolean }> // $ExpectType "T"
-type Overwrite2 = Equals<Overwrite<{ a: string }, { b: boolean }>, { a: string; b: boolean }> // $ExpectType "T"
-type Overwrite3 = Equals<Overwrite<{ a: string; b: number }, { b?: boolean }>, { a: string; b?: boolean }> // $ExpectType "T"
+type Overwrite1 = Overwrite<{ a: string; b: number }, { b: boolean }> // $ExpectType Compact<Pick<{ a: string; b: number; }, "a"> & { b: boolean; }>
+type Overwrite2 = Overwrite<{ a?: string; b: number }, { b: boolean }> // $ExpectType Compact<Pick<{ a?: string | undefined; b: number; }, "a"> & { b: boolean; }>
+type Overwrite3 = Overwrite<{ a: string }, { b: boolean }> // $ExpectType Compact<Pick<{ a: string; }, "a"> & { b: boolean; }>
+type Overwrite4 = Overwrite<{ a: string; b: number }, { b?: boolean }> // $ExpectType Compact<Pick<{ a: string; b: number; }, "a"> & { b?: boolean | undefined; }>
 
 //
 // Diff
 //
 
-type Diff1 = Equals<Diff<{ a: string; b: number }, 'b'>, { a: string; b?: number }> // $ExpectType "T"
+type Diff1 = Diff<{ a: string; b: number }, 'b'> // $ExpectType Compact<{ a: string; } & { b?: number | undefined; }>
 
 //
 // RowLacks
@@ -77,10 +77,10 @@ exactf1(exact3)
 //
 // KeysOfType
 //
-type KeysOfType1 = Equals<KeysOfType<{ a: string; b: never }, never>, 'b'> // $ExpectType "T"
-type KeysOfType2 = Equals<KeysOfType<{ a: string; b: string }, string>, 'a' | 'b'> // $ExpectType "T"
-type KeysOfType3 = Equals<KeysOfType<{ a: string; b: string | boolean }, string>, 'a'> // $ExpectType "T"
-type KeysOfType4 = Equals<KeysOfType<{ a: string; b?: string }, string>, 'a'> // $ExpectType "T"
+type KeysOfType1 = KeysOfType<{ a: string; b: never }, never> // $ExpectType "b"
+type KeysOfType2 = KeysOfType<{ a: string; b: string }, string> // $ExpectType "a" | "b"
+type KeysOfType3 = KeysOfType<{ a: string; b: string | boolean }, string> // $ExpectType "a"
+type KeysOfType4 = KeysOfType<{ a: string; b?: string }, string> // $ExpectType "a"
 
 //
 // AnyTuple
@@ -123,7 +123,7 @@ readonly1.bar.quux[1].barbaz = 1
 type TaggedUnionMemberA = { tag: 'A'; a: string }
 type TaggedUnionMemberB = { tag: 'B'; b: number }
 type TaggedUnionMemberC = TaggedUnionMemberA | TaggedUnionMemberB
-type TaggedUnionMember1 = Equals<TaggedUnionMember<TaggedUnionMemberC, 'tag', 'A'>, TaggedUnionMemberA> // $ExpectType "T"
+type TaggedUnionMember1 = TaggedUnionMember<TaggedUnionMemberC, 'tag', 'A'> // $ExpectType TaggedUnionMemberA
 
 //
 // RequiredKeys
@@ -137,7 +137,14 @@ type BarForRequired = {
 }
 
 type BarRequiredKeys = RequiredKeys<BarForRequired> // $ExpectType "a" | "b"
-type RequiredKeysIndexSignature = RequiredKeys<{ [x: string]: any; a: number; b: Date; x?: string; y?: Date }> // $ExpectType "a" | "b"
+// $ExpectType "a" | "b"
+type RequiredKeysIndexSignature = RequiredKeys<{
+  [x: string]: any
+  a: number
+  b: Date
+  x?: string
+  y?: Date
+}>
 type RequiredKeysEmpty = RequiredKeys<{}> // $ExpectType never
 
 //
@@ -152,5 +159,12 @@ type BarForOptional = {
 }
 
 type BarOptionalKeys = OptionalKeys<BarForOptional> // $ExpectType "x" | "y"
-type OptionalKeysIndexSignature = OptionalKeys<{ [x: string]: any; a: number; b: Date; x?: string; y?: Date }> // $ExpectType "x" | "y"
+// $ExpectType "x" | "y"
+type OptionalKeysIndexSignature = OptionalKeys<{
+  [x: string]: any
+  a: number
+  b: Date
+  x?: string
+  y?: Date
+}>
 type OptionalKeysEmpty = OptionalKeys<{}> // $ExpectType never

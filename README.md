@@ -1,6 +1,9 @@
 # TypeScript compatibility
 
-The stable version is tested against TypeScript 2.9.1+
+| `typelevel-ts` version | required `typescript` version |
+| ---------------------- | ----------------------------- |
+| 0.4.x                  | 3.5+                          |
+| 0.3.x                  | 2.9.1+                        |
 
 # Documentation
 

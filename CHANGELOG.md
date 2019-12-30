@@ -13,6 +13,13 @@
 **Note**: Gaps between patch versions are faulty/broken releases. **Note**: A feature tagged as Experimental is in a
 high state of flux, you're at risk of it changing without notice.
 
+# 0.4.0
+
+- **Breaking Change**
+  - remove `Omit` type, use built-in instead (@gcanti)
+- **Bug Fix**
+  - rewrite `Overwrite` definition using built-in `Omit`, fix #43 (@looading)
+
 # 0.3.5
 
 - **Polish**

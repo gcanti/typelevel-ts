@@ -1,3 +1,10 @@
+/**
+ * @since 0.3.0
+ */
+
+/**
+ * @since 0.3.0
+ */
 export type Compact<A> = { [K in keyof A]: A[K] }
 
 /**
@@ -8,36 +15,30 @@ export type Compact<A> = { [K in keyof A]: A[K] }
  *
  * export type Result1 = Equals<string, string> // "T"
  * export type Result2 = Equals<string, number> // "F"
+ *
+ * @since 0.3.0
  */
-export type Equals<A, B> = (<C>() => C extends Compact<A> ? 'T' : 'F') extends (<C>() => C extends Compact<B>
-  ? 'T'
-  : 'F')
+export type Equals<A, B> = (<C>() => C extends Compact<A> ? 'T' : 'F') extends <C>() => C extends Compact<B> ? 'T' : 'F'
   ? 'T'
   : 'F'
-
-/**
- * Extracts a super-type of `A` identified by its keys `K`
- *
- * @example
- * import { Omit } from 'typelevel-ts'
- *
- * export type Result = Omit<{ a: string; b: number }, 'a'> // { b: number }
- */
-export type Omit<A extends object, K extends string | number | symbol> = Pick<A, Exclude<keyof A, K>>
 
 /**
  * @example
  * import { Overwrite } from 'typelevel-ts'
  *
  * export type Result = Overwrite<{ a: string; b: number }, { b: boolean }> // { a: string; b: boolean }
+ *
+ * @since 0.3.0
  */
-export type Overwrite<A extends object, B extends object> = Compact<{ [K in Exclude<keyof A, keyof B>]: A[K] } & B>
+export type Overwrite<A extends object, B extends object> = Compact<Omit<A, keyof B> & B>
 
 /**
  * @example
  * import { Diff } from 'typelevel-ts'
  *
  * export type Result = Diff<{ a: string; b: number }, 'b'> // { a: string; b?: number }
+ *
+ * @since 0.3.0
  */
 export type Diff<A extends object, OK extends keyof A> = Compact<
   { [K in Exclude<keyof A, OK>]: A[K] } & { [K in OK]?: A[K] }
@@ -50,6 +51,8 @@ export type Diff<A extends object, OK extends keyof A> = Compact<
  * import { KeysOfType } from 'typelevel-ts'
  *
  * export type Result = KeysOfType<{a: string, b: string | boolean, c: boolean, d: string}, string> // "a" | "d"
+ *
+ * @since 0.3.0
  */
 export type KeysOfType<A extends object, B> = { [K in keyof A]-?: A[K] extends B ? K : never }[keyof A]
 
@@ -59,11 +62,13 @@ export type KeysOfType<A extends object, B> = { [K in keyof A]-?: A[K] extends B
  * @example
  * import { RowLacks } from 'typelevel-ts'
  *
- * export declare function f(x: RowLacks<{ a: string; b: number }, 'a' | 'b'>): void
+ * // function f(x: RowLacks<{ a: string; b: number }, 'a' | 'b'>): void {}
  * // $ExpectError
  * // f({ a: 'a', b: 1 })
- * declare function g(x: RowLacks<{ a: string; b: number }, 'c'>): void
+ * function g(x: RowLacks<{ a: string; b: number }, 'c'>): void {}
  * g({ a: 'a', b: 1 }) // ok
+ *
+ * @since 0.3.0
  */
 export type RowLacks<A extends object, K extends string | number | symbol> = A & Record<Extract<keyof A, K>, never>
 
@@ -71,10 +76,12 @@ export type RowLacks<A extends object, K extends string | number | symbol> = A &
  * @example
  * import { Exact } from 'typelevel-ts'
  *
- * declare function f<T extends Exact<{ a: string }, T>>(a: T): void
+ * function f<T extends Exact<{ a: string }, T>>(a: T): void {}
  * f({ a: 'a' })
  * // $ExpectError
  * // f({ a: 'a', b: 1 })
+ *
+ * @since 0.3.0
  */
 export type Exact<A extends object, B extends A> = A & Record<Exclude<keyof B, keyof A>, never>
 
@@ -82,25 +89,31 @@ export type Exact<A extends object, B extends A> = A & Record<Exclude<keyof B, k
  * @example
  * import { AnyTuple } from 'typelevel-ts'
  *
- * declare function f<T extends AnyTuple>(x: T): T
- * declare const x: [number]
- * declare const y: [number, string]
- * declare const z: [number, string, boolean]
+ * function f<T extends AnyTuple>(x: T): T {
+ *   return x
+ * }
+ * const x: [number] = [1]
+ * const y: [number, string] = [1, 'a']
+ * const z: [number, string, boolean] = [1, 'a', true]
  * f(x)
  * f(y)
  * f(z)
  * // $ExpectError
  * // f([1, 2, 3])
+ *
+ * @since 0.3.0
  */
 export type AnyTuple = Array<any> & { '0': any }
 
 /**
  * @internal
+ * @since 0.3.0
  */
 export interface DeepReadonlyArray<A> extends ReadonlyArray<DeepReadonly<A>> {}
 
 /**
  * @internal
+ * @since 0.3.0
  */
 export type DeepReadonlyObject<A> = { readonly [K in keyof A]: DeepReadonly<A[K]> }
 
@@ -119,6 +132,8 @@ export type DeepReadonlyObject<A> = { readonly [K in keyof A]: DeepReadonly<A[K]
  * export declare const x: ReadonlyFoo
  * // $ExpectError
  * // x.bar.quux[1].barbaz = 1
+ *
+ * @since 0.3.0
  */
 export type DeepReadonly<A> = A extends Array<infer B> ? DeepReadonlyArray<B> : DeepReadonlyObject<A>
 
@@ -132,6 +147,8 @@ export type DeepReadonly<A> = A extends Array<infer B> ? DeepReadonlyArray<B> : 
  * type B = { tag: 'B'; b: number }
  * type C = A | B
  * export type Result = TaggedUnionMember<C, 'tag', 'A'> // A
+ *
+ * @since 0.3.0
  */
 export type TaggedUnionMember<A extends object, Tag extends keyof A, Value extends A[Tag]> = Extract<
   A,
@@ -146,6 +163,8 @@ export type TaggedUnionMember<A extends object, Tag extends keyof A, Value exten
  *
  * type A = { a: string; b: number; x?: string; y?: number }
  * export type Result = RequiredKeys<A> // "a" | "b"
+ *
+ * @since 0.3.0
  */
 export type RequiredKeys<T> = { [K in keyof T]: {} extends Pick<T, K> ? never : K } extends { [_ in keyof T]: infer U }
   ? {} extends U
@@ -161,6 +180,8 @@ export type RequiredKeys<T> = { [K in keyof T]: {} extends Pick<T, K> ? never : 
  *
  * type A = { a: string; b: number; x?: string; y?: number }
  * export type Result = OptionalKeys<A> // "x" | "y"
+ *
+ * @since 0.3.0
  */
 export type OptionalKeys<T> = { [K in keyof T]: T extends Record<K, T[K]> ? never : K } extends {
   [_ in keyof T]: infer U
